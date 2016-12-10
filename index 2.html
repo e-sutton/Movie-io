@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>MovieO</title>
+  <!-- jquery mobile links/scripts -->
+  <script src="jquery/jquery-2.1.4.min.js"></script>
+  <script src="jquery/jquery.mobile-1.4.5.min.js"></script>
+  <link rel="stylesheet" href="jquery/themes/MovieO_Red.css"/>
+  <link rel="stylesheet" href="jquery/themes/jquery.mobile.icons.min.css" />
+  <link href="jquery/jquery.mobile.structure-1.4.5.css" rel="stylesheet" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"> <!--sizing -->
+
+</head>
+<body>
+    <div data-role="page" id="loginpage">
+        <div data-role="header" data-theme="a">
+          <div style="text-align: center">
+            <span id="mainTitle">Welcome to MovieO!</span>
+          </div>
+        </div>
+        <div role="main" class="ui-content">
+            <div id="loginarea" style="text-align:center">
+                <h3 id="logintitle">Login</h3>
+                <label for="txt-first-name">Username</label>
+                <input type="text" name="txt-first-name" id="username" value="">
+                <label for="txt-password">Password</label>
+                <input type="password" name="txt-password" id="password" value="">
+                <br/>
+                <button id="submit" onclick="login()">Login</button>
+                <br/>
+                <a href="#registerpage" data-transition="slidedown" id="registerlink">Register</a>
+            </div>
+        </div>
+    </div>
+
+    <div data-role="page" id="registerpage">
+        <div data-role="header" data-theme="a">
+            <img src="logo.png" alt="logo" id="logo"/>
+        </div>
+         <div role="main" class="ui-content">
+            <div id="signuparea" style="text-align:center">
+                <h3 id="logintitle">Sign Up</h3>
+                <label for="txt-first-name">Username</label>
+                <input type="text" name="txt-first-name" id="regusername" value="">
+                <label for="txt-email">Email Address</label>
+                <input type="text" name="txt-email" id="email" value="">
+                <label for="txt-password">Password</label>
+                <input type="password" name="txt-password" id="regpassword" value="">
+                <br/>
+                <button id="submit" onclick="register()"> Submit</button>
+                <br/>
+                <a href="#loginpage" data-transition="slideup" id="registerlink">Login</a>
+            </div>
+        </div>
+    </div>
+
+    <div data-role="page" id="main-page" data-url="main-page">
+        <script>
+            checkLogin();
+        </script>
+            <div data-role="panel" id="leftpanel1" data-position="left" data-display="reveal" data-theme="a"
+            class="ui-panel ui-panel-position-left ui-panel-display-reveal ui-body-a ui-panel-animate ui-panel-closed">
+
+        <div class="ui-panel-inner">
+          <h3>Main Menu</h3>
+          <a href="#profile-page" data-rel="close" class="ui-btn ui-shadow ui-corner-all ui-btn-a ui-btn-inline">Profile</a>
+          <p><a href="#cinemas-page" data-rel="close" class="ui-btn ui-shadow ui-corner-all ui-btn-a ui-btn-inline">Cinemas</a> </p>
+          <p><a href="#logout" data-rel="close" class="ui-btn ui-shadow ui-corner-all ui-btn-a ui-btn-inline">Log Out</a> </p>
+        </div>
+          </div>
+        <div data-role="header" data-theme="a">
+            <div data-role="navbar" data-theme="a">
+              <div id="headertext" style="text-align:center">
+                <span>MovieO!</span>
+                </div>
+                <div id="leftIcon" style="margin-right:-20%;">
+                  <a href="#leftpanel1"><h3>ClickMe</h3></a>
+                </div>
+
+        </div>
+    </div>
+    <div id="listviewDiv" class="ui-panel-wrapper">
+    <ul data-role="listview" data-inset="true">
+      <li><a href="#">
+      <h2>Broken Bells</h2>
+      <p>Broken Bells</p></a>
+      </li>
+      <li><a href="#">
+      <h2>Warning</h2>
+      <p>Hot Chip</p></a>
+      </li>
+      <li><a href="#">
+      <h2>Wolfgang Amadeus Phoenix</h2>
+      <p>Phoenix</p></a>
+      </li>
+  </ul>
+</div>
+    <div data-role="footer" data-id="main-page" data-position="fixed" data-tap-toggle="false">
+    <div data-role="navbar">
+        <ul>
+            <li onclick=""><a href="#">Box Office</a></li>
+            <li onclick=""><a href="#">Search</a></li>
+            <li onclick=""><a href="#">My List</a></li>
+        </ul>
+    </div><!-- /navbar -->
+    </div><!-- /footer -->
+</div>
+
+</body>
+</html>
