@@ -1,30 +1,29 @@
 //search movie
-$( document ).on( "pagecreate", "#search-page", function() {
-    $( "#autocomplete" ).on( "filterablebeforefilter", function ( e, data ) {
-        var $ul = $( this ),
-            $input = $( data.input ),
-            value = $input.val(),
-            html = "";
-        $ul.html( "" );
-        if ( value && value.length > 2 ) {
-            $ul.html( "<li><div class='ui-loader'><span class='ui-icon ui-icon-loading'></span></div></li>" );
-            $ul.listview( "refresh" );
-            $.ajax({
-                url: "http://gd.geobytes.com/AutoCompleteCity",
-                dataType: "jsonp",
-                crossDomain: true,
-                data: {
-                    q: $input.val()
-                }
-            })
-            .then( function ( response ) {
-                $.each( response, function ( i, val ) {
-                    html += "<li>" + val + "</li>";
-                });
-                $ul.html( html );
-                $ul.listview( "refresh" );
-                $ul.trigger( "updatelayout");
-            });
-        }
-    });
-});
+$( document ).on( "pageinit", "#search-page", function() {
+  alert('started');
+    $('#autocomplete-input').keypress(function (e) {
+        if (e.which == 13) {
+          e.PreventDefault();
+          alert('pressed!');
+          var myMovie = $('#autocomplete-input').val();
+          alert("Movie = " +myMovie);
+          var myUrl, myData;
+
+          myUrl = 'https://www.omdbapi.com/?t=' + myMovie + '&type=movie&tomatoes=true';
+            $.ajax({
+              url: myUrl,
+              dataType: "json",
+              success: loadData
+
+            });
+
+            //return false;    //<---- prevent text disappearing
+          }
+      });
+
+function loadData(e){
+    $('#autocomplete').html(
+      '<li><a href="#"><h2>' + e.Title + '</h2><p>' + e.Year + '</p></a></li>'
+    );
+}
+}
