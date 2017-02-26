@@ -1,3 +1,28 @@
+<?php
+/*
+* index.php *
+* Rev 1 *
+* 26/02/2017 *
+*
+* @author Eoin Sutton *
+*/
+
+    // get connection to DB
+    include("connection.php");
+
+    // Check whether user is logged in
+    if(empty($_SESSION['user']))
+    {
+      // Rediret to main menu
+      //echo '<script type="text/javascript">window.location.replace("index.php");</script>';
+    }
+    else
+    {
+        //if logged in, echo js function to direct page to #main-page role
+        echo '<script type="text/javascript">window.location.replace("index.php#main-page");</script>';
+    }
+
+?>
 <!DOCTYPE html>
 
 <html>
@@ -11,31 +36,56 @@
   <link rel="stylesheet" href="jquery/themes/MovieO_Red.css"/>
   <link rel="stylesheet" href="jquery/themes/jquery.mobile.icons.min.css" />
   <link href="jquery/jquery.mobile.structure-1.4.5.css" rel="stylesheet" />
-
   <meta name="viewport" content="width=device-width, initial-scale=1"> <!--sizing -->
   <script>
+
+      //check user logged in on load of main-page data role
+      $( document ).on( "pagecreate", "#main-page", function() {
+          checkLogin();
+        });
+
+        function checkLogin(){
+          //alert("pageinit function loaded");
+          $.ajax({
+              type: "GET",
+              url: "check_login.php",
+              success: function(result){
+                  if(result === "Not Logged In"){
+                    window.location.replace("index.php");
+                  };
+
+              },
+              error: function(xhr, status, error){
+                  //$("#message")[0].value = "Ajax error!"+result;
+                  alert("check_login.pho error" + xhr.responseText);
+              }
+          });
+        };
 
       //global variables
       var movieTitle = "";
 
-      //check if user already logged in
-        function checkLogin() {
-            if (sessionStorage.getItem('movieiologin') == "true" || sessionStorage.getItem('movieiologin') != null) {
-                window.location = "index.html#main-page";
-            }
-        };
-
-      //logout
+            //logout
             function logout() {
-                sessionStorage.removeItem("movielogin");
-                //sessionStorage.setItem("movieiologin", false);
-                window.location = "index.html#";
+              $.ajax({
+                  type: "GET",
+                  url: "logout.php",
+                  success: function(result){
+                      window.location.replace("index.php");
+                  },
+                  error: function(xhr, status, error){
+                      //$("#message")[0].value = "Ajax error!"+result;
+                      alert("logout.php error" + xhr.responseText);
+                  }
+              });
             };
 
 
 
       //search page function
   $( document ).on( "pagecreate", "#search-page", function() {
+      //alert("pageinit function loaded");
+      checkLogin();
       $('#autocomplete-input').keypress(function (e) {
           if (e.which == 13) {
 
@@ -60,26 +110,14 @@
 
             });
             return false;
-            /*
-            var myMovie = $('#autocomplete-input').val();
-            var myUrl, myData;
-
-            myUrl = 'https://www.omdbapi.com/?t=' + myMovie + '&type=movie&plot=full';
-              $.ajax({
-                url: myUrl,
-                dataType: "json",
-                success: loadSearchData
-
-              });
-              return false; //prevent actual submit of form on press of enter
-            */}
+          }
 
         });
       });
 
       //cinemas page function
                       $( document ).on( "pagecreate", "#map-page", function() {
-
+                    checkLogin();
                     //set map
                     var dublin = new google.maps.LatLng(53.348244, -6.267938);
                     var mapOptions = {
@@ -177,21 +215,10 @@
                         data: "username="+user+"&password="+password,
                         success: function(result){
 
-                                if (result.a === "Logged In")
+                                if (result === "Logged In")
                                 {
-                                    alert(JSON.stringify(result.a));
-                                //set session via local storage
-                                if (typeof(Storage) !== "undefined")
-                                    {
-                                        sessionStorage.setItem("movieiologin",true);
-                                        sessionStorage.setItem("movieioid", result.b);
-                                        window.location = "index.html#main-page";
-
-                                    }
-                                    else
-                                    {
-                                        alert("Sorry! No Web Storage support..");
-                                    }
+                                    alert(JSON.stringify(result));
+                                    window.location.replace("index.php#main-page");
                                 }
                                 else
                                 {
@@ -215,7 +242,7 @@
 
 
 </head>
-<body onload="checklogin()">
+<body>
     <div data-role="page" id="loginpage">
         <div data-role="header" data-theme="a">
           <div style="text-align: center">
@@ -260,9 +287,6 @@
 <!--Box Office/Main Page-->
 
     <div data-role="page" id="main-page" data-url="main-page">
-        <script>
-            checkLogin();
-        </script>
             <div data-role="panel" id="leftpanel1" data-position="left" data-display="reveal" data-theme="a"
             class="ui-panel ui-panel-position-left ui-panel-display-reveal ui-body-a ui-panel-animate ui-panel-closed">
 
