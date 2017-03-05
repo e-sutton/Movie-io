@@ -10,6 +10,9 @@
     // Remove user data from session
     unset($_SESSION['user']);
 
+    //destroy session
+    session_destroy();
+
     // Redirect to index
     header("Location: index.php");
     die("Redirecting to: index.php");

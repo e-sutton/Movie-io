@@ -15,7 +15,10 @@
                 username,
                 password,
                 salt,
-                email
+                email,
+                about_me,
+                location,
+                avatar
             FROM login
             WHERE
                 username = :username
@@ -75,6 +78,11 @@
             unset($row['salt']);
             unset($row['password']);
             $_SESSION['user'] = $row;
+            $_SESSION['username'] = $row['username'];
+            $_SESSION['email'] = $row['email'];
+            $_SESSION['about_me'] = $row['about_me'];
+            $_SESSION['location'] = $row['location'];
+            $_SESSION['avatar'] = $row['avatar'];
             // Return successful message is login is successfulse
             $result = "Logged In";
             echo json_encode($result);

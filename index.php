@@ -237,6 +237,30 @@
 
         };
 
+        function updateProfile(){
+          var username = $("#updatenametxtarea")[0].value;
+          alert("username = " + username);
+          var email = $("#updateemailtxtarea")[0].value;
+          //var password = $("#updatepasswordtxtarea")[0].value;
+          var about_me = $("#updateaboutmetxtarea")[0].value;
+          var location = $("#updatelocationtxtarea")[0].value;
+          $.ajax({
+              type: "POST",
+              url: "profile.php",
+              data: "username="+username+"&email="+email+"&about_me="+about_me+"&location="+location,
+              success: function(result){
+                      //$("#message")[0].value = "Success";
+                      alert("Profile update successful!\n Please logout and login to see changes");
+              },
+              error: function(xhr, status, error){
+                  //$("#message")[0].value = "Ajax error!"+result;
+                  alert("Profile update unsuccessful" + xhr.responseText + error.responseText);
+              }
+
+
+          });
+        };
+
 
 </script>
 
@@ -519,6 +543,63 @@
   </div><!-- /navbar -->
   </div><!-- /footer -->
     </div>
+
+<!--profile page -->
+<div data-role="page" id="profile-page" data-url="profile-page" data-transition="slidedown">
+  <div data-role="panel" id="leftpanel2" data-position="left" data-display="reveal" data-theme="a"
+  class="ui-panel ui-panel-position-left ui-panel-display-reveal ui-body-a ui-panel-animate ui-panel-closed">
+
+<div class="ui-panel-inner">
+<h3>Main Menu</h3>
+<a href="#profile-page" data-rel="close" class="ui-btn ui-shadow ui-corner-all ui-btn-a ui-btn-inline">Profile</a>
+<p><a href="#map-page" data-rel="close" class="ui-btn ui-shadow ui-corner-all ui-btn-a ui-btn-inline">Cinemas</a> </p>
+<p><a href="" onclick="logout()" data-rel="close" class="ui-btn ui-shadow ui-corner-all ui-btn-a ui-btn-inline">Log Out</a> </p>
+</div>
+</div>
+<div data-role="header" data-theme="a" data-position="fixed">
+  <div data-role="navbar" data-theme="a">
+    <div id="headertext" style="text-align:center">
+      <span>Movie io</span>
+      </div>
+      <div id="leftIcon" style="margin-right:-20%;">
+        <a href="#leftpanel2"><img src="jquery/images/icons-png/bullets-white.png"/></a>
+      </div>
+</div>
+</div>
+  <div id="profilediv" class="ui-panel-wrapper">
+    <div id="namediv" class="mainDivs">Username: <?php echo $_SESSION['username'];?></div>
+    <div id="emaildiv" class="mainDivs">Email: <?php echo $_SESSION['email'];?></div>
+    <div id="aboutmediv" class="synopsis">About Me: <?php echo $_SESSION['about_me'];?></div>
+    <div id="locationdiv" class="mainDivs">My Location: <?php echo $_SESSION['location'];?></div>
+    <div id="avatardiv" class="mainDivs"><?php echo $_SESSION['avatar'];?></div>
+    <p>
+      <div id="updatename" style="width:40%; height:80%; margin-top:5%; margin-left:2%; float:left">
+      <textarea id="updatenametxtarea" placeholder="Update Name..."></textarea>
+      </div>
+      <div id="updateemail" style="width:40%; height:40%; margin-top:5%; margin-left:2%; float:left">
+      <textarea id="updateemailtxtarea" placeholder="Update Email..."></textarea>
+      </div>
+      <div id="updateaboutme" style="width:40%; height:40%; margin-top:5%; margin-left:2%; float:left">
+      <textarea id="updateaboutmetxtarea" placeholder="Update About Me..."></textarea>
+      </div>
+      <div id="updatelocation" style="width:40%; height:40%; margin-top:5%; margin-left:2%; float:left">
+      <textarea id="updatelocationtxtarea" placeholder="Update Location..."></textarea>
+      </div>
+      <div id="submitbtn" style="width:70%; height:20%; margin-top:5%; margin-left:2%; float:left">
+      <input type="submit" name="submit" value="Submit" id="submit" onclick="updateProfile()"/>
+      </div>
+    </p>
+  </div>
+<div data-role="footer" data-id="search-page-footer" data-position="fixed" data-tap-toggle="false">
+  <div data-role="navbar">
+      <ul>
+          <li onclick=""><a href="#main-page">Box Office</a></li>
+          <li onclick=""><a href="#search-page">Search</a></li>
+          <li onclick=""><a href="#list-page">My List</a></li>
+      </ul>
+  </div><!-- /navbar -->
+  </div><!-- /footer -->
+</div>
 
 </body>
 </html>
