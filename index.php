@@ -39,6 +39,65 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"> <!--sizing -->
   <script>
 
+      //find movie reviews
+      function loadReviews(e, title, release_Date){
+        if(e){
+        var title = e.Title.replace("&nbsp;","").trim();
+        var release_date = e.Released.trim();
+      }
+      else{
+        var title = title.replace("&nbsp;","").trim();
+        var release_date = release_Date.trim();
+      }
+        console.log("title is " + title + " release is " + release_date);
+        $.ajax({
+            type: "POST",
+            url: "load_reviews.php",
+            data: "&title="+title+"&release_date="+release_date,
+            success: function(result){
+                    //$("#message")[0].value = "Success";
+                    alert("Movie fetch success! " + result);
+                    result = $.parseJSON(result);
+                    console.log(result);
+                    $.each(result, function (key, value) {
+                      var list = $('<ul></ul>');
+                      $('#reviews').append(list);
+                      console.log("key: " + key + " value: " +value.review);
+                        list.append('<li>' + " Score: " +value.score + " > " + value.review + " - " + value.username + " " + value.location + '</li>');
+                    });
+            },
+            error: function(xhr, status, error){
+                //$("#message")[0].value = "Ajax error!"+result;
+                alert("Movie fetch error " + xhr.responseText);
+            }
+        });
+      };
+
+      //insert movie review
+      function insertReview(){
+        var review = $('#txtAreaReview').val().trim();
+        var score = "";
+        var title = $('#title').text().replace("&nbsp;","").trim();
+        var release_Date = $('#releasedate').text().replace("Release Date:","").trim();
+        var user_id = $('#sessionuserid').text();
+        alert("review text: " + review + ", user id: "+user_id + ", title: " +title + ", release: " +release_Date);
+        $.ajax({
+            type: "POST",
+            url: "review_movie.php",
+            data: "review="+review +"&title="+title+"&release_date="+release_Date+"&user_id=" + user_id,
+            success: function(result){
+                    //$("#message")[0].value = "Success";
+                    alert("Review save Success! " + JSON.stringify(result.Title));
+                    //reload reviews
+                    loadReviews(null, title, release_Date);
+            },
+            error: function(xhr, status, error){
+                //$("#message")[0].value = "Ajax error!"+result;
+                alert("Review JS error!" + xhr.responseText);
+            }
+        });
+      };
+
       //check user logged in on load of main-page data role
       $( document ).on( "pagecreate", "#main-page", function() {
           checkLogin();
@@ -151,7 +210,7 @@
       movieTitle = e.Title;
       $('#autocomplete').html(
         '<li class="ui-first-child ui-last-child"><a href="#movie-page" class="ui-btn ui-btn-icon-right ui-icon-carat-r"> <img src="'+ e.Poster + '">'+
-        '<h2 style="color:white !important">' + e.Title + '</h2>'+
+        '<h2 style="color:white !important">' + e.Title.replace("&nbsp;","") + '</h2>'+
         '<div><p>' + e.Plot + '</p></div>'+
         '<p class="ui-li-aside">' + e.Released+ '</p></a></li>'
       );
@@ -160,13 +219,15 @@
 
       //movie page function
       function loadMovieData(e){
-        $('#title').html('<h2 style="color:white !important">' + e.Title +'</h2>');
+        $('#title').html('<h2 style="color:white !important">' + e.Title.replace("&nbsp;","") +'</h2>');
          $('#releasedate').html('Release Date: ' +e.Released);
           $('#synopsis').html(e.Plot);
           $('#starring').html('Starring: ' + e.Actors);
           $('#awards').html('Awards: ' + e.Awards);
           $('#metascore').html(' Metascore: ' + e.Metascore);
           $('#posterdiv').html('<img src="' + e.Poster +'" style="max-width:100%; max-height:100%;"/>');
+          //now load reviews
+          loadReviews(e);
   }
 
       function submitReview(){
@@ -485,7 +546,7 @@
     <textarea id="txtAreaReview" placeholder="What did you think?"></textarea>
     </div>
     <div id="submitbtn" style="width:70%; height:20%; margin-top:5%; margin-left:2%; float:left">
-    <input type="submit" name="submit" value="Submit" id="submit" onclick="submitReview()"/>
+    <input type="submit" name="submit" value="Submit" id="submit" onclick="insertReview()"/>
     </div>
     <div id="reviewSection">
     <div class="reviewSection">Reviews:</div>
@@ -600,6 +661,7 @@
   </div><!-- /navbar -->
   </div><!-- /footer -->
 </div>
-
+<!--hidden varibles to hold php values -->
+<div style="display: none;" id="sessionuserid"><?php echo $_SESSION['user']['id'];?></div>
 </body>
 </html>
