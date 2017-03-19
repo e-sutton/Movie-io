@@ -5,6 +5,7 @@
 * 26/02/2017 *
 *
 * @author Eoin Sutton *
+* @reference (star rating): https://github.com/wbotelhos/raty
 */
 
     // get connection to DB
@@ -32,28 +33,53 @@
   <script src="jquery/jquery-2.1.4.min.js"></script>
   <script src="jquery/jquery.mobile-1.4.5.min.js"></script>
   <script src="http://maps.googleapis.com/maps/api/js"></script>
+  <script src="jquery/jquery.raty.js"></script>
   <!--<script src="SearchMovie.js"></script>-->
   <link rel="stylesheet" href="jquery/themes/MovieO_Red.css"/>
+  <link rel="stylesheet" href="jquery/jquery.raty.css"/>
   <link rel="stylesheet" href="jquery/themes/jquery.mobile.icons.min.css" />
   <link href="jquery/jquery.mobile.structure-1.4.5.css" rel="stylesheet" />
   <meta name="viewport" content="width=device-width, initial-scale=1"> <!--sizing -->
   <script>
 
+      //load user reviews
+      $( document ).on( "pagecreate", "#profile-page", function() {
+        $.ajax({
+            type: "POST",
+            url: "load_user_reviews.php",
+            success: function(result){
+                    //$("#message")[0].value = "Success";
+                    alert("User reviews fetch success! " + result);
+                    result = $.parseJSON(result);
+                    console.log(result);
+                    $.each(result, function (key, value) {
+                      var list = $('<ul></ul>');
+                      $('#userReviews').append(list);
+                      console.log("key: " + key + " value: " +value.review);
+                        list.append("<li>" + "<div style='width:5%; height:5%;'><img src='data:image/jpeg;charset=utf-8;base64," + value.avatar + "' style='max-width:100%; max-height:100%;'></div>" + "<h3>" + value.username + ", " + value.location + "</h3>"
+                                    + "<p>" + value.review +"</p>" + "</li>");
+                    });
+            },
+            error: function(xhr, status, error){
+                //$("#message")[0].value = "Ajax error!"+result;
+                alert("User review fetch error " + xhr.responseText);
+            }
+        });
+      });
+
       //find movie reviews
-      function loadReviews(e, title, release_Date){
+      function loadReviews(e, title){
         if(e){
-        var title = e.Title.replace("&nbsp;","").trim();
-        var release_date = e.Released.trim();
+        var title = e.Title.replace("&nbsp;"," ").trim();
       }
       else{
-        var title = title.replace("&nbsp;","").trim();
-        var release_date = release_Date.trim();
+        var title = title.replace("&nbsp;"," ").trim();
       }
-        console.log("title is " + title + " release is " + release_date);
+        console.log("title is " + title);
         $.ajax({
             type: "POST",
             url: "load_reviews.php",
-            data: "&title="+title+"&release_date="+release_date,
+            data: "&title="+title,
             success: function(result){
                     //$("#message")[0].value = "Success";
                     alert("Movie fetch success! " + result);
@@ -63,7 +89,8 @@
                       var list = $('<ul></ul>');
                       $('#reviews').append(list);
                       console.log("key: " + key + " value: " +value.review);
-                        list.append('<li>' + " Score: " +value.score + " > " + value.review + " - " + value.username + " " + value.location + '</li>');
+                        list.append("<li>" + "<div style='width:5%; height:5%;'><img src='thumb_IMG_1126_1024.jpg' style='max-width:100%; max-height:100%;'></div>" + "<h3>" + value.username + ", " + value.location + "</h3>" + "<h4> Score: " + value.score + "</h4>"
+                                    + "<p>" + value.review +"</p>" + "</li>");
                     });
             },
             error: function(xhr, status, error){
@@ -76,20 +103,20 @@
       //insert movie review
       function insertReview(){
         var review = $('#txtAreaReview').val().trim();
-        var score = "";
+        var score = $('#ratingdiv').raty('score');
         var title = $('#title').text().replace("&nbsp;","").trim();
         var release_Date = $('#releasedate').text().replace("Release Date:","").trim();
         var user_id = $('#sessionuserid').text();
-        alert("review text: " + review + ", user id: "+user_id + ", title: " +title + ", release: " +release_Date);
+        alert("review text: " + review + ", user id: "+user_id + ", title: " +title + ", release: " +release_Date + ", score " + score);
         $.ajax({
             type: "POST",
             url: "review_movie.php",
-            data: "review="+review +"&title="+title+"&release_date="+release_Date+"&user_id=" + user_id,
+            data: "review="+review +"&title="+title+"&release_date="+release_Date+"&user_id=" + user_id + "&score=" +score,
             success: function(result){
                     //$("#message")[0].value = "Success";
                     alert("Review save Success! " + JSON.stringify(result.Title));
                     //reload reviews
-                    loadReviews(null, title, release_Date);
+                    loadReviews(null, title);
             },
             error: function(xhr, status, error){
                 //$("#message")[0].value = "Ajax error!"+result;
@@ -210,7 +237,7 @@
       movieTitle = e.Title;
       $('#autocomplete').html(
         '<li class="ui-first-child ui-last-child"><a href="#movie-page" class="ui-btn ui-btn-icon-right ui-icon-carat-r"> <img src="'+ e.Poster + '">'+
-        '<h2 style="color:white !important">' + e.Title.replace("&nbsp;","") + '</h2>'+
+        '<h2 style="color:white !important">' + e.Title.replace("&nbsp;"," ") + '</h2>'+
         '<div><p>' + e.Plot + '</p></div>'+
         '<p class="ui-li-aside">' + e.Released+ '</p></a></li>'
       );
@@ -219,22 +246,23 @@
 
       //movie page function
       function loadMovieData(e){
-        $('#title').html('<h2 style="color:white !important">' + e.Title.replace("&nbsp;","") +'</h2>');
+        $('#title').html('<h2 style="color:white !important">' + e.Title.replace("&nbsp;"," ") +'</h2>');
          $('#releasedate').html('Release Date: ' +e.Released);
           $('#synopsis').html(e.Plot);
           $('#starring').html('Starring: ' + e.Actors);
           $('#awards').html('Awards: ' + e.Awards);
           $('#metascore').html(' Metascore: ' + e.Metascore);
           $('#posterdiv').html('<img src="' + e.Poster +'" style="max-width:100%; max-height:100%;"/>');
+          //load star ratings
+          $('#ratingdiv').raty({
+            starOff: 'images/star-off.png',
+            starOn: 'images/star-on.png',
+            size: 24
+          });
           //now load reviews
           loadReviews(e);
   }
 
-      function submitReview(){
-          var review = $('textarea#txtAreaReview').val();
-          //alert(review);
-          $('#reviews').append("<p>" + review + " - esutton 19/12/2016</p>");
-      }
 
       function register(){
 
@@ -298,13 +326,19 @@
 
         };
 
+        //update profile
         function updateProfile(){
           var username = $("#updatenametxtarea")[0].value;
-          alert("username = " + username);
+          //alert("username = " + username);
           var email = $("#updateemailtxtarea")[0].value;
-          //var password = $("#updatepasswordtxtarea")[0].value;
           var about_me = $("#updateaboutmetxtarea")[0].value;
           var location = $("#updatelocationtxtarea")[0].value;
+          var filename = $("#filetoupload").val();
+          var file = $("#filetoupload").files[0];
+          if (username == "" && email == "" && about_me == "" && location == "" && filename == ""){
+            alert("Please enter at least one update!")
+          }
+          else{
           $.ajax({
               type: "POST",
               url: "profile.php",
@@ -317,10 +351,33 @@
                   //$("#message")[0].value = "Ajax error!"+result;
                   alert("Profile update unsuccessful" + xhr.responseText + error.responseText);
               }
-
-
           });
         };
+      };
+
+      //submit profile update Form
+      function updateProfile2(){
+      $("#formdata").submit(function(){
+        var formData = new FormData($(this)[0]);
+        $.ajax({
+          type: "POST",
+          url: "profile.php",
+          data: formData,
+          async: false,
+          success: function(data){
+            alert("Update ajax worked " + data);
+          },
+          error: function(xhr, status, error){
+              //$("#message")[0].value = "Ajax error!"+result;
+              alert("Profile update unsuccessful" + xhr.responseText + error.responseText);
+          },
+          cache: false,
+          contentType: false,
+          processData: false
+        });
+        return false;
+      });
+    };
 
 
 </script>
@@ -530,17 +587,14 @@
 </div>
 <div id="moviediv" class="ui-panel-wrapper">
     <div id="title" class="mainDivs"></div>
-    <div id="posterdiv"></div>
+    <div id="posterdiv" class="posterdiv"></div>
     <div id="releasedate" class="mainDivs"></div>
     <div id="synopsis" class="synopsis"></div>
     <div id="starring" class="mainDivs"></div>
     <div id="awards" class="mainDivs"></div>
     <div id="metascore" class="mainDivs"></div>
     <div id="ratingtext" class="mainDivs"></div><p>
-    <div id="ratingdiv" class="mainDivs">
-    <div class="rating">
-        <span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
-    </div>
+    <div id="ratingdiv" data-role="none" class="mainDivs">
     </div>
     <div id="reviewArea" style="width:80%; height:40%; margin-top:5%; margin-left:2%; float:left">
     <textarea id="txtAreaReview" placeholder="What did you think?"></textarea>
@@ -551,9 +605,7 @@
     <div id="reviewSection">
     <div class="reviewSection">Reviews:</div>
         <div id="reviews" class="userReviews">
-
         </div>
-
     </div>
 </div>
   <div data-role="footer" data-id="search-page-footer" data-position="fixed" data-tap-toggle="false">
@@ -629,27 +681,27 @@
 </div>
   <div id="profilediv" class="ui-panel-wrapper">
     <div id="namediv" class="mainDivs">Username: <?php echo $_SESSION['username'];?></div>
+    <div id="profileavatar" style="width:20%; height:20%; margin-top:5%; margin-right:2%; float:right;"><img src="data:image/jpeg;charset=utf-8;base64,<?php echo $_SESSION['avatar']; ?> " style="max-width:100%; border-radius:0.5em; max-height:100%;"/></div>
     <div id="emaildiv" class="mainDivs">Email: <?php echo $_SESSION['email'];?></div>
     <div id="aboutmediv" class="synopsis">About Me: <?php echo $_SESSION['about_me'];?></div>
     <div id="locationdiv" class="mainDivs">My Location: <?php echo $_SESSION['location'];?></div>
-    <div id="avatardiv" class="mainDivs"><?php echo $_SESSION['avatar'];?></div>
     <p>
-      <div id="updatename" style="width:40%; height:80%; margin-top:5%; margin-left:2%; float:left">
-      <textarea id="updatenametxtarea" placeholder="Update Name..."></textarea>
-      </div>
-      <div id="updateemail" style="width:40%; height:40%; margin-top:5%; margin-left:2%; float:left">
-      <textarea id="updateemailtxtarea" placeholder="Update Email..."></textarea>
-      </div>
-      <div id="updateaboutme" style="width:40%; height:40%; margin-top:5%; margin-left:2%; float:left">
-      <textarea id="updateaboutmetxtarea" placeholder="Update About Me..."></textarea>
-      </div>
-      <div id="updatelocation" style="width:40%; height:40%; margin-top:5%; margin-left:2%; float:left">
-      <textarea id="updatelocationtxtarea" placeholder="Update Location..."></textarea>
-      </div>
-      <div id="submitbtn" style="width:70%; height:20%; margin-top:5%; margin-left:2%; float:left">
-      <input type="submit" name="submit" value="Submit" id="submit" onclick="updateProfile()"/>
-      </div>
+      <form id="formdata" method="post" enctype="multipart/form-data" class="mainDivs">
+      <!--<div id="updatename" style="width:40%; height:80%; margin-top:5%; margin-left:2%; float:left">
+      <textarea id="updatenametxtarea" placeholder="Update Name..."></textarea>-->
+      <input type="text" name="username" placeholder="Update name..."/>
+      <input type="text" name="email" placeholder="Update email..."/>
+      <input type="text" name="about_me" placeholder="Update about me..."/>
+      <input type="text" name="location" placeholder="Update location..."/>
+      Upload your image: <input type="file" name="myfile" id="filetoupload">
+      <button onclick="updateProfile2()">Submit</button>
+    </form>
     </p>
+    <div id="userReviewSection">
+    <div class="reviewSection">Comments:</div>
+        <div id="userReviews" class="userReviews">
+        </div>
+    </div>
   </div>
 <div data-role="footer" data-id="search-page-footer" data-position="fixed" data-tap-toggle="false">
   <div data-role="navbar">

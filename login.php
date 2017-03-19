@@ -82,7 +82,7 @@
             $_SESSION['email'] = $row['email'];
             $_SESSION['about_me'] = $row['about_me'];
             $_SESSION['location'] = $row['location'];
-            $_SESSION['avatar'] = $row['avatar'];
+            $_SESSION['avatar'] = base64_encode($row['avatar']);
             // Return successful message is login is successfulse
             $result = "Logged In";
             echo json_encode($result);

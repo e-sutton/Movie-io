@@ -13,6 +13,38 @@
 /* Globals */
 /*---Custom CSS---*/
 
+/*review li and div*/
+#reviews ul {
+  list-style-type: none;
+  width: 70% !important;
+}
+
+#reviews h3 {
+  font: bold 20px/1.5 Helvetica, Verdana, sans-serif;
+}
+
+#reviews li img {
+  float: left;
+  margin: 0 15px 0 0;
+}
+
+#reviews li p {
+  font: 200 16px/1.5 Georgia, sans-serif;
+}
+
+#reviews li {
+  padding: 10px;
+  overflow: auto;
+  border-radius: 1em;
+}
+
+#reviews li:hover {
+  cursor: pointer;
+	background: #ed0c24 /*{a-bup-background-color}*/;
+	color: #ffffff /*{a-bup-color}*/;
+}
+
+/*menus*/
 .rightMenu {
     position: absolute;
     top:-10%;
@@ -40,56 +72,43 @@
 		border-right-width: medium;
 }
 
-.rating {
-  unicode-bidi: bidi-override;
-  direction: rtl;
-    text-align: left;
-}
-.rating > span {
-  display: inline-block;
-  position: relative;
-  width: 1.1em;
-}
-.rating > span:hover:before,
-.rating > span:hover ~ span:before {
-   content: "\2605";
-   position: absolute;
-    color: gold;
-padding-left: 15px;
-}
+/*star rating */
+
 
 span{
 padding-left: 15px;
 }
 
+/*divs of review page*/
 .mainDivs{
-    width:70%; 
-    height:20%; 
-    margin-top:5%; 
-    margin-left:2%; 
+    width:70%;
+    height:20%;
+    margin-top:5%;
+    margin-left:2%;
     float:left;
 }
 
 .synopsis{
-    width:70%; 
-    height:40%; 
-    margin-top:5%; 
-    margin-left:2%; 
+    width:70%;
+    height:40%;
+    margin-top:5%;
+    margin-left:2%;
     float:left;
 }
 
-#posterdiv{
-    width:25%; 
-    height:25%; 
-    margin-top:5%; 
-    margin-right:2%; 
+.posterdiv{
+    width:25%;
+    height:25%;
+    margin-top:5%;
+    margin-right:2%;
     float:right;
 }
 
+
 .reviewSection{
-    width: 100%; 
-    height:20%; 
-    margin-top:5%; 
+    width: 100%;
+    height:20%;
+    margin-top:5%;
     margin-left:auto;
     margin-right: auto;
     float:left;
@@ -98,9 +117,9 @@ padding-left: 15px;
 }
 
 .userReviews{
-    width: 95%; 
-    height:20%; 
-    margin-top:5%; 
+    width: 95%;
+    height:20%;
+    margin-top:5%;
     margin-left:2%;
     margin-right: auto;
     float:left;

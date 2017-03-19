@@ -1,6 +1,6 @@
 <?php
 /*
-* login.php *
+* load_user_reviews.php *
 * Rev 1 *
 * 08/03/17 *
 *
@@ -17,20 +17,18 @@
     echo "<script>console.log( 'Debug Objects: " . $output . "' );</script>";
     };
 
-    //start
-    if(!empty($_POST))
-    {
+      //start
       // parameters
       $query_params = array(
-          ':movie_title' => $_POST['title']
+          ':id' => $_SESSION['user']['id']
       );
 
-      //Insert
+
+      //query
       $query = "
-      SELECT a.review, a.score, b.username, b.location from movie_reviews a
-      JOIN login b on (a.user_id = b.id)
-        WHERE
-        a.movie_title = :movie_title
+      SELECT b.avatar
+      FROM user_reviews a JOIN login b on (a.created_by_user_id = b.id)
+      WHERE a.user_id = :id
       ";
 
       try
@@ -47,7 +45,7 @@
 
       $encode = array();
       while ($row = $stmt->fetch()) {
-        $encode[] = $row;
+        $encode[] = base64_encode($row);
       };
 
       echo json_encode($encode);
@@ -58,5 +56,4 @@
       }*/
 
 
-}
 ?>

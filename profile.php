@@ -9,9 +9,9 @@
     include("connection.php");
     ini_set('display_errors', 1);
     error_reporting(E_ALL);
-ini_set('error_log', 'path_to_log_file');
-ini_set('log_errors_max_len', 0);
-ini_set('log_errors', true);
+    ini_set('error_log', 'path_to_log_file');
+    ini_set('log_errors_max_len', 0);
+    ini_set('log_errors', true);
     $login_ok = true;
 
     // check if edit form submitted
@@ -135,6 +135,10 @@ if(!empty($_POST['location']))
         $login_ok = false;
     }
 
+
+
+
+
     // update session info with new email
     $_SESSION['user']['email'] = $_POST['email'];
 
@@ -151,6 +155,57 @@ if(!empty($_POST['location']))
             echo json_encode($result);
 
         }
+  }
+
+  //now upload file if file exists
+  if(isset($_FILES['myfile']) && $_FILES['myfile']['size'] > 0) {
+    $name = $_FILES['myfile']['name'];
+    $tmpName = addslashes(file_get_contents($_FILES['myfile']['tmp_name']));
+    $fileSize = $_FILES['myfile']['size'];
+    $fileType = $_FILES['myfile']['type'];
+
+    /*$myFile = fopen($tmpName,'r');
+    $readFile = fread($myfile, filesize($tmpName));
+    $readFile = addslashes($readFile);
+    fclose($myFile);*/
+
+    $username = $_SESSION['user']['username'];
+
+    $query = "
+  UPDATE login SET avatar = '$tmpName', filetype = '$fileType', filesize = '$fileSize', filename = '$name'
+    WHERE username = '$username'
+    ";
+
+    $login_ok = true;
+
+    try
+    {
+        // Run query
+        $stmt = $db->prepare($query);
+        $result = $stmt->execute();
+    }
+    catch(PDOException $ex)
+    {
+
+        echo("Failed to run query: " . $ex->getMessage());
+        $login_ok = false;
+    }
+
+    if($login_ok)
+    {
+
+        $result = "Updated!";
+        echo json_encode($result);
+    }
+    else
+    {
+
+        $result = "Update failed!";
+        echo json_encode($result);
+
+    }
+
+
   }
 
 ?>

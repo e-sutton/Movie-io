@@ -1,0 +1,14 @@
+[19-Mar-2017 17:32:04 Europe/Berlin] PHP Notice:  Undefined variable: myfile in /Applications/MAMP/htdocs/movie-io/profile.php on line 168
+[19-Mar-2017 17:32:04 Europe/Berlin] PHP Warning:  fread() expects parameter 1 to be resource, null given in /Applications/MAMP/htdocs/movie-io/profile.php on line 168
+[19-Mar-2017 17:33:32 Europe/Berlin] PHP Notice:  Undefined variable: myfile in /Applications/MAMP/htdocs/movie-io/profile.php on line 168
+[19-Mar-2017 17:33:32 Europe/Berlin] PHP Warning:  fread() expects parameter 1 to be resource, null given in /Applications/MAMP/htdocs/movie-io/profile.php on line 168
+[19-Mar-2017 17:33:47 Europe/Berlin] PHP Notice:  Undefined variable: myfile in /Applications/MAMP/htdocs/movie-io/profile.php on line 168
+[19-Mar-2017 17:33:47 Europe/Berlin] PHP Warning:  fread() expects parameter 1 to be resource, null given in /Applications/MAMP/htdocs/movie-io/profile.php on line 168
+[19-Mar-2017 17:33:55 Europe/Berlin] PHP Notice:  Undefined variable: myfile in /Applications/MAMP/htdocs/movie-io/profile.php on line 168
+[19-Mar-2017 17:33:55 Europe/Berlin] PHP Warning:  fread() expects parameter 1 to be resource, null given in /Applications/MAMP/htdocs/movie-io/profile.php on line 168
+[19-Mar-2017 17:35:39 Europe/Berlin] PHP Notice:  Undefined variable: myfile in /Applications/MAMP/htdocs/movie-io/profile.php on line 168
+[19-Mar-2017 17:35:39 Europe/Berlin] PHP Warning:  fread() expects parameter 1 to be resource, null given in /Applications/MAMP/htdocs/movie-io/profile.php on line 168
+[19-Mar-2017 18:05:59 Europe/Berlin] PHP Notice:  Undefined variable: myfile in /Applications/MAMP/htdocs/movie-io/profile.php on line 168
+[19-Mar-2017 18:05:59 Europe/Berlin] PHP Warning:  fread() expects parameter 1 to be resource, null given in /Applications/MAMP/htdocs/movie-io/profile.php on line 168
+[19-Mar-2017 18:16:57 Europe/Berlin] PHP Notice:  Undefined index: user in /Applications/MAMP/htdocs/movie-io/profile.php on line 55
+[19-Mar-2017 18:16:57 Europe/Berlin] PHP Notice:  Undefined index: username in /Applications/MAMP/htdocs/movie-io/profile.php on line 172
