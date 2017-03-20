@@ -14,31 +14,31 @@
 /*---Custom CSS---*/
 
 /*review li and div*/
-#reviews ul {
+.userReviews ul {
   list-style-type: none;
   width: 70% !important;
 }
 
-#reviews h3 {
+.userReviews h3 {
   font: bold 20px/1.5 Helvetica, Verdana, sans-serif;
 }
 
-#reviews li img {
+.userReviews li img {
   float: left;
   margin: 0 15px 0 0;
 }
 
-#reviews li p {
+.userReviews li p {
   font: 200 16px/1.5 Georgia, sans-serif;
 }
 
-#reviews li {
+.userReviews li {
   padding: 10px;
   overflow: auto;
   border-radius: 1em;
 }
 
-#reviews li:hover {
+.userReviews li:hover {
   cursor: pointer;
 	background: #ed0c24 /*{a-bup-background-color}*/;
 	color: #ffffff /*{a-bup-color}*/;
@@ -116,7 +116,7 @@ padding-left: 15px;
     color: white;
 }
 
-.userReviews{
+/*.userReviews{
     width: 95%;
     height:20%;
     margin-top:5%;
@@ -124,7 +124,7 @@ padding-left: 15px;
     margin-right: auto;
     float:left;
     text-align: left;
-}
+}*/
 
 #map-canvas{
     width:90%;

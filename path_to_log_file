@@ -12,3 +12,13 @@
 [19-Mar-2017 18:05:59 Europe/Berlin] PHP Warning:  fread() expects parameter 1 to be resource, null given in /Applications/MAMP/htdocs/movie-io/profile.php on line 168
 [19-Mar-2017 18:16:57 Europe/Berlin] PHP Notice:  Undefined index: user in /Applications/MAMP/htdocs/movie-io/profile.php on line 55
 [19-Mar-2017 18:16:57 Europe/Berlin] PHP Notice:  Undefined index: username in /Applications/MAMP/htdocs/movie-io/profile.php on line 172
+[20-Mar-2017 21:25:44 Europe/Berlin] PHP Warning:  PDOStatement::execute() expects parameter 1 to be array, string given in /Applications/MAMP/htdocs/movie-io/load_public_user_page.php on line 33
+[20-Mar-2017 21:25:54 Europe/Berlin] PHP Warning:  PDOStatement::execute() expects parameter 1 to be array, string given in /Applications/MAMP/htdocs/movie-io/load_public_user_page.php on line 33
+[20-Mar-2017 21:28:43 Europe/Berlin] PHP Warning:  PDOStatement::execute() expects parameter 1 to be array, string given in /Applications/MAMP/htdocs/movie-io/load_public_user_page.php on line 33
+[20-Mar-2017 21:29:02 Europe/Berlin] PHP Warning:  PDOStatement::execute() expects parameter 1 to be array, string given in /Applications/MAMP/htdocs/movie-io/load_public_user_page.php on line 33
+[20-Mar-2017 21:31:26 Europe/Berlin] PHP Warning:  PDOStatement::execute() expects parameter 1 to be array, string given in /Applications/MAMP/htdocs/movie-io/load_public_user_page.php on line 33
+[20-Mar-2017 21:32:41 Europe/Berlin] PHP Warning:  PDOStatement::execute() expects parameter 1 to be array, string given in /Applications/MAMP/htdocs/movie-io/load_public_user_page.php on line 33
+[20-Mar-2017 21:33:15 Europe/Berlin] PHP Warning:  PDOStatement::execute() expects parameter 1 to be array, string given in /Applications/MAMP/htdocs/movie-io/load_public_user_page.php on line 33
+[20-Mar-2017 21:35:49 Europe/Berlin] PHP Fatal error:  Unsupported operand types in /Applications/MAMP/htdocs/movie-io/load_public_user_page.php on line 57
+[20-Mar-2017 21:36:09 Europe/Berlin] PHP Fatal error:  Unsupported operand types in /Applications/MAMP/htdocs/movie-io/load_public_user_page.php on line 57
+[20-Mar-2017 21:57:33 Europe/Berlin] PHP Notice:  Undefined index: userid in /Applications/MAMP/htdocs/movie-io/load_public_user_page.php on line 22

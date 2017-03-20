@@ -43,9 +43,9 @@
   <script>
 
       //load user reviews
-      $( document ).on( "pagecreate", "#profile-page", function() {
+      function loadUserReviews(){
         $.ajax({
-            type: "POST",
+            type: "GET",
             url: "load_user_reviews.php",
             success: function(result){
                     //$("#message")[0].value = "Success";
@@ -56,7 +56,7 @@
                       var list = $('<ul></ul>');
                       $('#userReviews').append(list);
                       console.log("key: " + key + " value: " +value.review);
-                        list.append("<li>" + "<div style='width:5%; height:5%;'><img src='data:image/jpeg;charset=utf-8;base64," + value.avatar + "' style='max-width:100%; max-height:100%;'></div>" + "<h3>" + value.username + ", " + value.location + "</h3>"
+                        list.append("<li onclick='goToPublicProfile(\x22" +  value.id + "\x22)'>" + "<div style='width:5%; height:5%;'><img src='" + value.avatar + "' style='max-width:100%; max-height:100%;'></div>" + "<h3>" + value.username + ", " + value.location + "</h3>"
                                     + "<p>" + value.review +"</p>" + "</li>");
                     });
             },
@@ -65,6 +65,11 @@
                 alert("User review fetch error " + xhr.responseText);
             }
         });
+      }
+
+      //on page load of profile
+      $( document ).on( "pagecreate", "#profile-page", function() {
+        loadUserReviews();
       });
 
       //find movie reviews
@@ -89,7 +94,7 @@
                       var list = $('<ul></ul>');
                       $('#reviews').append(list);
                       console.log("key: " + key + " value: " +value.review);
-                        list.append("<li>" + "<div style='width:5%; height:5%;'><img src='thumb_IMG_1126_1024.jpg' style='max-width:100%; max-height:100%;'></div>" + "<h3>" + value.username + ", " + value.location + "</h3>" + "<h4> Score: " + value.score + "</h4>"
+                        list.append("<li>" + "<div style='width:5%; height:5%;'><img src='" + value.avatar + "' style='max-width:100%; max-height:100%;'></div>" + "<h3>" + value.username + ", " + value.location + "</h3>" + "<h4> Score: " + value.score + "</h4>"
                                     + "<p>" + value.review +"</p>" + "</li>");
                     });
             },
@@ -121,6 +126,28 @@
             error: function(xhr, status, error){
                 //$("#message")[0].value = "Ajax error!"+result;
                 alert("Review JS error!" + xhr.responseText);
+            }
+        });
+      };
+
+      //insert user review
+      function insertReview2(){
+        var review = $('#txtAreaReview2').val().trim();
+        var score = $('#ratingdiv2').raty('score');
+        var created_by_user_id = $('#sessionuserid').text();
+        var user_id = $('#useridhidden').text();
+        alert("review text: " + review + ", user id: "+user_id + ", score " + score);
+        $.ajax({
+            type: "POST",
+            url: "review_user.php",
+            data: "review="+review +"&created_by_user_id=" + created_by_user_id + "&score=" +score + "&user_id=" + user_id,
+            success: function(result){
+                    //$("#message")[0].value = "Success";
+                    alert("User Review save Success! " + JSON.stringify(result.Title));
+            },
+            error: function(xhr, status, error){
+                //$("#message")[0].value = "Ajax error!"+result;
+                alert("User Review JS error!" + xhr.responseText);
             }
         });
       };
@@ -326,7 +353,7 @@
 
         };
 
-        //update profile
+        /*//update profile
         function updateProfile(){
           var username = $("#updatenametxtarea")[0].value;
           //alert("username = " + username);
@@ -353,7 +380,7 @@
               }
           });
         };
-      };
+      };*/
 
       //submit profile update Form
       function updateProfile2(){
@@ -378,6 +405,36 @@
         return false;
       });
     };
+
+    function goToPublicProfile(id){
+      //get user name
+      var userid = id;
+      alert("public id  = " + userid);
+      $.ajax({
+          type: "POST",
+          url: "load_public_user_page.php",
+          data: "userid=" + userid,
+          success: function(result){
+                  //$("#message")[0].value = "Success";
+                  alert("Public user load success! " + JSON.stringify(result));
+                  //set hidden div to save user id for insertReview2() use
+                  $('#useridhidden').html(userid);
+                  //activate rating stars
+                  $('#ratingdiv2').raty({
+                    starOff: 'images/star-off.png',
+                    starOn: 'images/star-on.png',
+                    size: 24
+                  });
+                  //redirect user to public window
+                  window.location.replace("index.php#public-profile-page");
+          },
+          error: function(xhr, status, error){
+              //$("#message")[0].value = "Ajax error!"+result;
+              alert("Public user load JS error!" + xhr.responseText);
+          }
+      });
+
+    }
 
 
 </script>
@@ -681,7 +738,7 @@
 </div>
   <div id="profilediv" class="ui-panel-wrapper">
     <div id="namediv" class="mainDivs">Username: <?php echo $_SESSION['username'];?></div>
-    <div id="profileavatar" style="width:20%; height:20%; margin-top:5%; margin-right:2%; float:right;"><img src="data:image/jpeg;charset=utf-8;base64,<?php echo $_SESSION['avatar']; ?> " style="max-width:100%; border-radius:0.5em; max-height:100%;"/></div>
+    <div id="profileavatar" style="width:20%; height:20%; margin-top:5%; margin-right:2%; float:right;"><img src="<?php echo $_SESSION['avatar']; ?>" style="max-width:100%; border-radius:0.5em; max-height:100%;"/></div>
     <div id="emaildiv" class="mainDivs">Email: <?php echo $_SESSION['email'];?></div>
     <div id="aboutmediv" class="synopsis">About Me: <?php echo $_SESSION['about_me'];?></div>
     <div id="locationdiv" class="mainDivs">My Location: <?php echo $_SESSION['location'];?></div>
@@ -701,6 +758,62 @@
     <div class="reviewSection">Comments:</div>
         <div id="userReviews" class="userReviews">
         </div>
+    </div>
+  </div>
+<div data-role="footer" data-id="search-page-footer" data-position="fixed" data-tap-toggle="false">
+  <div data-role="navbar">
+      <ul>
+          <li onclick=""><a href="#main-page">Box Office</a></li>
+          <li onclick=""><a href="#search-page">Search</a></li>
+          <li onclick=""><a href="#list-page">My List</a></li>
+      </ul>
+  </div><!-- /navbar -->
+  </div><!-- /footer -->
+</div>
+
+<!--PUBLIC profile page -->
+<div data-role="page" id="public-profile-page" data-url="public-profile-page" data-transition="slidedown">
+  <div data-role="panel" id="leftpanel2" data-position="left" data-display="reveal" data-theme="a"
+  class="ui-panel ui-panel-position-left ui-panel-display-reveal ui-body-a ui-panel-animate ui-panel-closed">
+
+<div class="ui-panel-inner">
+<h3>Main Menu</h3>
+<a href="#profile-page" data-rel="close" class="ui-btn ui-shadow ui-corner-all ui-btn-a ui-btn-inline">Profile</a>
+<p><a href="#map-page" data-rel="close" class="ui-btn ui-shadow ui-corner-all ui-btn-a ui-btn-inline">Cinemas</a> </p>
+<p><a href="" onclick="logout()" data-rel="close" class="ui-btn ui-shadow ui-corner-all ui-btn-a ui-btn-inline">Log Out</a> </p>
+</div>
+</div>
+<div data-role="header" data-theme="a" data-position="fixed">
+  <div data-role="navbar" data-theme="a">
+    <div id="headertext" style="text-align:center">
+      <span>Movie io</span>
+      </div>
+      <div id="leftIcon" style="margin-right:-20%;">
+        <a href="#leftpanel2"><img src="jquery/images/icons-png/bullets-white.png"/></a>
+      </div>
+</div>
+</div>
+  <div id="profilediv" class="ui-panel-wrapper">
+    <div id="namediv" class="mainDivs">Username: <?php echo $_SESSION['publicuser'];?></div>
+    <div id="profileavatar" style="width:20%; height:20%; margin-top:5%; margin-right:2%; float:right;"><img src="<?php echo $_SESSION['publicuseravatar']; ?>" style="max-width:100%; border-radius:0.5em; max-height:100%;"/></div>
+    <div id="emaildiv" class="mainDivs">Email: <?php echo $_SESSION['publicuseremail'];?></div>
+    <div id="aboutmediv" class="synopsis">About Me: <?php echo $_SESSION['publicuseremail'];?></div>
+    <div id="locationdiv" class="mainDivs">My Location: <?php echo $_SESSION['publicuserlocation'];?></div>
+    <p>
+      <div id="ratingdiv2" data-role="none" class="mainDivs">
+      </div>
+      <div id="reviewArea2" style="width:80%; height:40%; margin-top:5%; margin-left:2%; float:left">
+      <textarea id="txtAreaReview2" placeholder="Comment on this users reviews...remember to be kind, this is a fun loving community!"></textarea>
+      </div>
+      <div id="submitbtn2" style="width:70%; height:20%; margin-top:5%; margin-left:2%; float:left">
+      <input type="submit" name="submit" value="Submit" id="submit" onclick="insertReview2()"/>
+      </div>
+    </p>
+    <div id="userReviewSection">
+    <div class="reviewSection">Comments:</div>
+        <div id="userReviews" class="userReviews">
+        </div>
+        <div id="useridhidden" style="display:none;"></div>
     </div>
   </div>
 <div data-role="footer" data-id="search-page-footer" data-position="fixed" data-tap-toggle="false">

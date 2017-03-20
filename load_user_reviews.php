@@ -26,7 +26,7 @@
 
       //query
       $query = "
-      SELECT b.avatar
+      SELECT b.id, b.avatar, b.username, b.location, a.review
       FROM user_reviews a JOIN login b on (a.created_by_user_id = b.id)
       WHERE a.user_id = :id
       ";
@@ -45,7 +45,7 @@
 
       $encode = array();
       while ($row = $stmt->fetch()) {
-        $encode[] = base64_encode($row);
+        $encode[] = $row;
       };
 
       echo json_encode($encode);

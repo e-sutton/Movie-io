@@ -160,7 +160,8 @@ if(!empty($_POST['location']))
   //now upload file if file exists
   if(isset($_FILES['myfile']) && $_FILES['myfile']['size'] > 0) {
     $name = $_FILES['myfile']['name'];
-    $tmpName = addslashes(file_get_contents($_FILES['myfile']['tmp_name']));
+    //$tmpName = addslashes(file_get_contents($_FILES['myfile']['tmp_name']));
+    $tmpName = $_FILES['myfile']['tmp_name'];
     $fileSize = $_FILES['myfile']['size'];
     $fileType = $_FILES['myfile']['type'];
 
@@ -171,8 +172,13 @@ if(!empty($_POST['location']))
 
     $username = $_SESSION['user']['username'];
 
+    //upload file to database/server
+    $pathName = "images/" . $name;
+    move_uploaded_file($tmpName,$pathName);
+
+
     $query = "
-  UPDATE login SET avatar = '$tmpName', filetype = '$fileType', filesize = '$fileSize', filename = '$name'
+    UPDATE login SET avatar = '$pathName', filetype = '$fileType', filesize = '$fileSize', filename = '$name'
     WHERE username = '$username'
     ";
 
