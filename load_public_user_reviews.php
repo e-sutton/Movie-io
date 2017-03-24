@@ -20,7 +20,7 @@
       //start
       // parameters
       $query_params = array(
-          ':id' => $_SESSION['user']['id']
+          ':id' => $_SESSION['publicuserid']
       );
 
 

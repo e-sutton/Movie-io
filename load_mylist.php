@@ -26,9 +26,10 @@
 
       //query
       $query = "
-      SELECT b.id, b.avatar, b.username, b.location, a.review, a.score
-      FROM user_reviews a JOIN login b on (a.created_by_user_id = b.id)
-      WHERE a.user_id = :id
+      SELECT movie_title, release_date, review, score
+      FROM movie_reviews
+      WHERE user_id = :id
+      AND score >= 3
       ";
 
       try

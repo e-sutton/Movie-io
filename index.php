@@ -42,6 +42,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"> <!--sizing -->
   <script>
 
+      //load MyList page movies
+      //on page load
+      $( document ).on( "pagecreate", "#list-page", function() {
+
+        $.ajax({
+            type: "GET",
+            url: "load_mylist.php",
+            success: function(result){
+                    //$("#message")[0].value = "Success";
+                    alert("My List fetch success! " + result);
+                    result = $.parseJSON(result);
+                    console.log(result);
+                    $.each(result, function (key, value) {
+                      //$('#listviewpage').append(list);
+                      console.log("key: " + key + " value: " +value.review);
+                        $('#listviewpage').append("<li onclick='goToPublicProfile(\x22" +  value.id + "\x22)'><a href='#'>"
+                        + "<h2>" + value.movie_title + "</h2>"
+                        +"<p> Your Score: " + value.score + "</p>" + "<p>" + value.review +"</p>" + "</a></li>").listview('refresh');;
+                    });
+            },
+            error: function(xhr, status, error){
+                //$("#message")[0].value = "Ajax error!"+result;
+                alert("User review fetch error " + xhr.responseText);
+            }
+        });
+
+    });
+
       //load user reviews
       function loadUserReviews(){
         $.ajax({
@@ -56,8 +84,35 @@
                       var list = $('<ul></ul>');
                       $('#userReviews').append(list);
                       console.log("key: " + key + " value: " +value.review);
+                        list.append("<li onclick='goToPublicProfile(\x22" +  value.id + "\x22)'>" + "<div style='width:5%; height:5%;'><img src='" + value.avatar + "' style='max-width:100%; max-height:100%;'></div>"
+                        + "<h3>" + value.username + ", " + value.location + "</h3>"
+                                    +"<h4> Score: " + value.score + "</h4>" + "<p>" + value.review +"</p>" + "</li>");
+                    });
+            },
+            error: function(xhr, status, error){
+                //$("#message")[0].value = "Ajax error!"+result;
+                alert("User review fetch error " + xhr.responseText);
+            }
+        });
+      }
+
+      //load PUBLIC user reviews
+      function loadPublicUserReviews(){
+        $.ajax({
+            type: "GET",
+            url: "load_public_user_reviews.php",
+            success: function(result){
+                    //$("#message")[0].value = "Success";
+                    alert("User reviews fetch success! " + result);
+                    result = $.parseJSON(result);
+                    console.log(result);
+                    $('#userReviews2').empty();
+                    $.each(result, function (key, value) {
+                      var list = $('<ul></ul>');
+                      $('#userReviews2').append(list);
+                      console.log("key: " + key + " value: " +value.review);
                         list.append("<li onclick='goToPublicProfile(\x22" +  value.id + "\x22)'>" + "<div style='width:5%; height:5%;'><img src='" + value.avatar + "' style='max-width:100%; max-height:100%;'></div>" + "<h3>" + value.username + ", " + value.location + "</h3>"
-                                    + "<p>" + value.review +"</p>" + "</li>");
+                                    +"<h4> Score: " + value.score + "</h4>"+ "<p>" + value.review +"</p>" + "</li>");
                     });
             },
             error: function(xhr, status, error){
@@ -69,7 +124,13 @@
 
       //on page load of profile
       $( document ).on( "pagecreate", "#profile-page", function() {
+        checkLogin();
         loadUserReviews();
+      });
+
+      //on page load of public profile
+      $( document ).on( "pageshow", "#public-profile-page", function() {
+        loadPublicUserReviews();
       });
 
       //find movie reviews
@@ -156,6 +217,7 @@
       $( document ).on( "pagecreate", "#main-page", function() {
           checkLogin();
         });
+
 
         function checkLogin(){
           //alert("pageinit function loaded");
@@ -605,9 +667,12 @@
       </div>
 </div>
 </div>
-    <!--Content here
+</p>
+    <div id="listviewDiv2" class="ui-panel-wrapper">
+      <ul data-role="listview" data-inset="true" id="listviewpage">
+      </ul>
+    </div>
 
-     -->
 <div data-role="footer" data-id="search-page-footer" data-position="fixed" data-tap-toggle="false">
   <div data-role="navbar">
       <ul>
@@ -809,12 +874,13 @@
       <input type="submit" name="submit" value="Submit" id="submit" onclick="insertReview2()"/>
       </div>
     </p>
-    <div id="userReviewSection">
-    <div class="reviewSection">Comments:</div>
-        <div id="userReviews" class="userReviews">
+
+    <div class="">Comments:
+
+        <div id="userReviews2" class="userReviews">
         </div>
         <div id="useridhidden" style="display:none;"></div>
-    </div>
+   </div>
   </div>
 <div data-role="footer" data-id="search-page-footer" data-position="fixed" data-tap-toggle="false">
   <div data-role="navbar">
