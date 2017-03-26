@@ -13,6 +13,17 @@
 /* Globals */
 /*---Custom CSS---*/
 
+.facebookimg {
+  width:50px;
+  height:50px;
+  border-radius:0.5em;
+
+}
+
+#facebookicon{
+  float: right;
+}
+
 /*review li and div*/
 .userReviews ul {
   list-style-type: none;

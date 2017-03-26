@@ -18,6 +18,46 @@
     };
 
       //start
+      if(!empty($_POST))
+      {
+        // parameters
+        $query_params = array(
+            ':id' => $_POST['id']
+        );
+
+
+        //query
+        $query = "
+        SELECT a.movie_title, a.release_date, a.review, a.score, b.id
+        FROM movie_reviews a join movies b on (a.movie_title = b.title)
+        WHERE user_id = :id
+        AND score >= 3
+        ";
+
+        try
+        {
+            // run query
+            $stmt = $db->prepare($query);
+            $result = $stmt->execute($query_params);
+        }
+        catch(PDOException $ex)
+        {
+
+            echo("Failed to run query: " . $ex->getMessage());
+        }
+
+        $encode = array();
+        while ($row = $stmt->fetch()) {
+          $encode[] = $row;
+        };
+
+        echo json_encode($encode);
+
+
+      }
+      else{
+
+
       // parameters
       $query_params = array(
           ':id' => $_SESSION['user']['id']
@@ -26,8 +66,8 @@
 
       //query
       $query = "
-      SELECT movie_title, release_date, review, score
-      FROM movie_reviews
+      SELECT a.movie_title, a.release_date, a.review, a.score, b.id
+      FROM movie_reviews a join movies b on (a.movie_title = b.title)
       WHERE user_id = :id
       AND score >= 3
       ";
@@ -55,6 +95,7 @@
       {
         echo json_encode($row);
       }*/
+    }
 
 
 ?>

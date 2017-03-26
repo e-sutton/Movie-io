@@ -45,7 +45,6 @@
       //load MyList page movies
       //on page load
       $( document ).on( "pagecreate", "#list-page", function() {
-
         $.ajax({
             type: "GET",
             url: "load_mylist.php",
@@ -57,7 +56,7 @@
                     $.each(result, function (key, value) {
                       //$('#listviewpage').append(list);
                       console.log("key: " + key + " value: " +value.review);
-                        $('#listviewpage').append("<li onclick='goToPublicProfile(\x22" +  value.id + "\x22)'><a href='#'>"
+                        $('#listviewpage').append("<li onclick='loadMovieDataFromList(\x22" +  value.id + "\x22)'><a href='#'>"
                         + "<h2>" + value.movie_title + "</h2>"
                         +"<p> Your Score: " + value.score + "</p>" + "<p>" + value.review +"</p>" + "</a></li>").listview('refresh');;
                     });
@@ -69,6 +68,26 @@
         });
 
     });
+
+    function loadMovieDataFromList(id){
+      var id = id;
+      $.ajax({
+          type: "POST",
+          url: "load_movies_from_list.php",
+          data: "&id="+id,
+          dataType : 'json',
+          success: function(result){
+                  //$("#message")[0].value = "Success";
+                  alert("Movie for List fetch success! " + result);
+                  loadMovieData(result);
+                  window.location.replace("index.php#movie-page");
+          },
+          error: function(xhr, status, error){
+              //$("#message")[0].value = "Ajax error!"+result;
+              alert("Movie for list fetch error " + xhr.responseText);
+          }
+      });
+    }
 
       //load user reviews
       function loadUserReviews(){
@@ -151,11 +170,12 @@
                     alert("Movie fetch success! " + result);
                     result = $.parseJSON(result);
                     console.log(result);
+                    $('#reviews').empty();
                     $.each(result, function (key, value) {
                       var list = $('<ul></ul>');
                       $('#reviews').append(list);
                       console.log("key: " + key + " value: " +value.review);
-                        list.append("<li>" + "<div style='width:5%; height:5%;'><img src='" + value.avatar + "' style='max-width:100%; max-height:100%;'></div>" + "<h3>" + value.username + ", " + value.location + "</h3>" + "<h4> Score: " + value.score + "</h4>"
+                        list.append("<li onclick='goToPublicProfile(\x22" +  value.id + "\x22)'>" + "<div style='width:5%; height:5%;'><img src='" + value.avatar + "' style='max-width:100%; max-height:100%;'></div>" + "<h3>" + value.username + ", " + value.location + "</h3>" + "<h4> Score: " + value.score + "</h4>"
                                     + "<p>" + value.review +"</p>" + "</li>");
                     });
             },
@@ -179,7 +199,6 @@
             url: "review_movie.php",
             data: "review="+review +"&title="+title+"&release_date="+release_Date+"&user_id=" + user_id + "&score=" +score,
             success: function(result){
-                    //$("#message")[0].value = "Success";
                     alert("Review save Success! " + JSON.stringify(result.Title));
                     //reload reviews
                     loadReviews(null, title);
@@ -190,6 +209,44 @@
             }
         });
       };
+
+      //insert movie data
+      function saveMovie(){
+        var title = $('#title').text().replace("&nbsp;","").trim();
+        var release_Date = $('#releasedate').text().replace("Release Date:","").trim();
+        var synopsis = $('#synopsis').text().trim();
+        var starring = $('#starring').text().trim();
+        var awards = $('#awards').text().trim();
+        var metascore = $('#metascore').text().trim();
+        var poster = $('#posterimg').prop('src');
+
+        var form_data = new FormData();
+        form_data.append("poster", poster);
+        form_data.append("title", title);
+        form_data.append("release_date", release_Date);
+        form_data.append("synopsis", synopsis);
+        form_data.append("starring", starring);
+        form_data.append("awards", awards);
+        form_data.append("metascore", metascore);
+
+        $.ajax({
+            type: "POST",
+            url: "save_movie.php",
+            data: form_data,
+            contentType: false,
+            processData: false,
+            //"&title="+title+"&release_date="+release_Date+"&synopsis="+synopsis+"&starring="+starring+"&awards="+awards+"&metascore="+metascore,
+            success: function(result){
+                    //$("#message")[0].value = "Success";
+                    alert("Movie save Success! " + JSON.stringify(result));
+            },
+            error: function(xhr, status, error){
+                //$("#message")[0].value = "Ajax error!"+result;
+                alert("Movie save JS error!" + xhr.responseText);
+            }
+        });
+
+      }
 
       //insert user review
       function insertReview2(){
@@ -335,13 +392,22 @@
 
       //movie page function
       function loadMovieData(e){
-        $('#title').html('<h2 style="color:white !important">' + e.Title.replace("&nbsp;"," ") +'</h2>');
+        //check for &nsbp in title
+        alert("title is " +e.Title);
+        var title = "";
+        if((e.Title.indexOf("&nsbp;")) != -1){
+          title = e.Title.replace("&nbsp;"," ");
+        }
+        else{
+          title = e.Title;
+        }
+        $('#title').html('<h2 style="color:white !important">' + title +'</h2>');
          $('#releasedate').html('Release Date: ' +e.Released);
           $('#synopsis').html(e.Plot);
           $('#starring').html('Starring: ' + e.Actors);
           $('#awards').html('Awards: ' + e.Awards);
           $('#metascore').html(' Metascore: ' + e.Metascore);
-          $('#posterdiv').html('<img src="' + e.Poster +'" style="max-width:100%; max-height:100%;"/>');
+          $('#posterdiv').html('<img id="posterimg" src="' + e.Poster +'" style="max-width:100%; max-height:100%;"/>');
           //load star ratings
           $('#ratingdiv').raty({
             starOff: 'images/star-off.png',
@@ -414,6 +480,15 @@
             });
 
         };
+
+        //login on press of enter
+        $(document).ready(function(){
+        $("#password").keypress(function(e){
+          if(e.which == 13){
+            login();
+          };
+        });
+      });
 
         /*//update profile
         function updateProfile(){
@@ -662,8 +737,11 @@
     <div id="headertext" style="text-align:center">
       <span>Movie io</span>
       </div>
-      <div id="leftIcon" style="margin-right:-20%;">
+      <div id="leftIcon" style="margin-right:-20%; float:left; width:50px; height:50px;">
         <a href="#leftpanel2"><img src="jquery/images/icons-png/bullets-white.png"/></a>
+      </div>
+      <div id="facebookicon">
+        <a href="https://www.facebook.com/sharer/sharer.php?u=http://URLHERE?id=30&picture=&title=&caption=Movie-io&quote=Heres a list of my favourite movies on Movie-io!&description="><img class="facebookimg" src="images/facebook.jpeg"/></a>
       </div>
 </div>
 </div>
@@ -722,7 +800,7 @@
     <textarea id="txtAreaReview" placeholder="What did you think?"></textarea>
     </div>
     <div id="submitbtn" style="width:70%; height:20%; margin-top:5%; margin-left:2%; float:left">
-    <input type="submit" name="submit" value="Submit" id="submit" onclick="insertReview()"/>
+    <input type="submit" name="submit" value="Submit" id="submit" onclick="saveMovie(),insertReview()"/>
     </div>
     <div id="reviewSection">
     <div class="reviewSection">Reviews:</div>
