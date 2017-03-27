@@ -16,7 +16,9 @@
           ':score' => $_POST['score'],
           ':review' => $_POST['review'],
           ':release_date' => $_POST['release_date'],
-          ':movie_title' => $_POST['title']
+          ':movie_title' => $_POST['title'],
+          ':lat' => filter_var($_POST['lat'], FILTER_VALIDATE_FLOAT),
+          ':lng' => filter_var($_POST['lng'], FILTER_VALIDATE_FLOAT)
       );
 
       //Insert
@@ -26,14 +28,18 @@
         score,
         review,
         release_date,
-        movie_title
+        movie_title,
+        lat,
+        lng
         )
         VALUES(
           :user_id,
           :score,
           :review,
           :release_date,
-          :movie_title
+          :movie_title,
+          :lat,
+          :lng
           )
       ";
 

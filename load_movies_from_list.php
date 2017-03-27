@@ -35,6 +35,14 @@
       WHERE id = :id
       ";
 
+      //try
+      /*
+      SELECT a.title, a.synopsis, a.release_date, a.starring, a.awards, a.metascore, a.poster,
+b.id, b.user_id, b.score, b.review, b.movie_title
+      FROM movies a join movie_reviews b on (a.title = b.movie_title)
+      WHERE a.id = 10
+      */
+
       try
       {
           // run query

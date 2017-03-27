@@ -34,6 +34,7 @@
   <script src="jquery/jquery.mobile-1.4.5.min.js"></script>
   <script src="http://maps.googleapis.com/maps/api/js"></script>
   <script src="jquery/jquery.raty.js"></script>
+  <script src="geolocation.js"></script>
   <!--<script src="SearchMovie.js"></script>-->
   <link rel="stylesheet" href="jquery/themes/MovieO_Red.css"/>
   <link rel="stylesheet" href="jquery/jquery.raty.css"/>
@@ -188,16 +189,18 @@
 
       //insert movie review
       function insertReview(){
+        var lat = sessionStorage.getItem("userLat");
+        var lng = sessionStorage.getItem("userLong");;
         var review = $('#txtAreaReview').val().trim();
         var score = $('#ratingdiv').raty('score');
         var title = $('#title').text().replace("&nbsp;","").trim();
         var release_Date = $('#releasedate').text().replace("Release Date:","").trim();
         var user_id = $('#sessionuserid').text();
-        alert("review text: " + review + ", user id: "+user_id + ", title: " +title + ", release: " +release_Date + ", score " + score);
+        alert("review text: " + review + ", user id: "+user_id + ", title: " +title + ", release: " +release_Date + ", score " + score +" LatLng: " +userLat+" "+userLong);
         $.ajax({
             type: "POST",
             url: "review_movie.php",
-            data: "review="+review +"&title="+title+"&release_date="+release_Date+"&user_id=" + user_id + "&score=" +score,
+            data: "review="+review +"&title="+title+"&release_date="+release_Date+"&user_id=" + user_id + "&score=" +score + "&lat="+userLat + "&lng="+userLong,
             success: function(result){
                     alert("Review save Success! " + JSON.stringify(result.Title));
                     //reload reviews
@@ -270,9 +273,15 @@
         });
       };
 
-      //check user logged in on load of main-page data role
+      //get gps co-ordinates when page first loadSearchData
+      $( document ).on( "pagecreate", function() {
+        getPosition();
+      });
+
+      //check user logged in on load of main-page data role, also grab gps position
       $( document ).on( "pagecreate", "#main-page", function() {
           checkLogin();
+          loadGeoData();
         });
 
 
@@ -393,7 +402,7 @@
       //movie page function
       function loadMovieData(e){
         //check for &nsbp in title
-        alert("title is " +e.Title);
+        alert("title is " +e.movie_title);
         var title = "";
         if((e.Title.indexOf("&nsbp;")) != -1){
           title = e.Title.replace("&nbsp;"," ");
@@ -644,28 +653,8 @@
         </div>
     </div>
     <div id="listviewDiv" class="ui-panel-wrapper">
-    <ul data-role="listview" data-inset="true">
-    <li><a href="#">
-    <h2>Jurassic Park</h2>
-    <p>1993</p></a>
-    </li>
-    <li><a href="#">
-    <h2>Interstellar</h2>
-    <p>2014</p></a>
-    </li>
-    <li><a href="#">
-    <h2>Star Trek</h2>
-    <p>2009</p></a>
-    </li>
-    <li><a href="#">
-    <h2>The Dark Knight</h2>
-    <p>2012</p></a>
-    </li>
-    <li><a href="#">
-    <h2>Arrival</h2>
-    <p>2016</p></a>
-    </li>
-</ul>
+      <ul data-role="listview" data-inset="true" id="listviewpage2">
+      </ul>
 </div>
     <div data-role="footer" data-id="main-page" data-position="fixed" data-tap-toggle="false">
     <div data-role="navbar">
