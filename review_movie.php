@@ -1,6 +1,6 @@
 <?php
 /*
-* login.php *
+* review_movie.php *
 * Rev 1 *
 * 08/03/17 *
 *
@@ -17,6 +17,7 @@
           ':review' => $_POST['review'],
           ':release_date' => $_POST['release_date'],
           ':movie_title' => $_POST['title'],
+          ':movie_id' => $_POST['movie_id'],
           ':lat' => filter_var($_POST['lat'], FILTER_VALIDATE_FLOAT),
           ':lng' => filter_var($_POST['lng'], FILTER_VALIDATE_FLOAT)
       );
@@ -29,6 +30,7 @@
         review,
         release_date,
         movie_title,
+        movie_id,
         lat,
         lng
         )
@@ -38,6 +40,7 @@
           :review,
           :release_date,
           :movie_title,
+          :movie_id,
           :lat,
           :lng
           )

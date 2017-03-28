@@ -30,9 +30,10 @@
 
       //Insert
       $query = "
-      SELECT title, synopsis, release_date, starring, awards, metascore, poster
-      FROM movies
-      WHERE id = :id
+      SELECT a.title, a.synopsis, a.release_date, a.starring, a.awards, a.metascore, a.poster,
+      b.id, b.user_id, b.score, b.review, b.movie_title
+      FROM movies a join movie_reviews b on (a.title = b.movie_title)
+      WHERE a.id = :id
       ";
 
       //try
@@ -66,6 +67,11 @@ b.id, b.user_id, b.score, b.review, b.movie_title
       $awards = $row['awards'];
       $metascore = $row['metascore'];
       $poster = $row['poster'];
+      $id = $row['id'];
+      $user_id = $row['user_id'];
+      $score = $row['score'];
+      $review = $row['review'];
+      $movie_title = $row['movie_title'];
 
       if($all_ok)
       {
@@ -77,7 +83,12 @@ b.id, b.user_id, b.score, b.review, b.movie_title
             "Actors" => $actors,
             "Awards" => $awards,
             "Metascore" => $metascore,
-            "Poster" => $poster
+            "Poster" => $poster,
+            "id" => $id,
+            "user_id" => $user_id,
+            "score" => $score,
+            "review" => $review,
+            "movie_title" => $movie_title
           ));
       }
       else

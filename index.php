@@ -78,6 +78,7 @@
           data: "&id="+id,
           dataType : 'json',
           success: function(result){
+                  console.log(result);
                   //$("#message")[0].value = "Success";
                   alert("Movie for List fetch success! " + result);
                   loadMovieData(result);
@@ -191,16 +192,21 @@
       function insertReview(){
         var lat = sessionStorage.getItem("userLat");
         var lng = sessionStorage.getItem("userLong");;
+        console.log("lat: "+lat +" lng: " +lng);
         var review = $('#txtAreaReview').val().trim();
         var score = $('#ratingdiv').raty('score');
         var title = $('#title').text().replace("&nbsp;","").trim();
         var release_Date = $('#releasedate').text().replace("Release Date:","").trim();
         var user_id = $('#sessionuserid').text();
-        alert("review text: " + review + ", user id: "+user_id + ", title: " +title + ", release: " +release_Date + ", score " + score +" LatLng: " +userLat+" "+userLong);
+        var movie_id = +sessionStorage.getItem("movie_id");
+        //console.log("movie id=" + movie_id);
+        //var movie_id = movie_id.replace('"','').trim();
+        //console.log("movie id=" + movie_id);
+        alert("review text: " + review + ", user id: "+user_id + ", title: " +title + ", release: " +release_Date + ", score " + score +" LatLng: " +lat+" "+lng + " movie_id="+movie_id);
         $.ajax({
             type: "POST",
             url: "review_movie.php",
-            data: "review="+review +"&title="+title+"&release_date="+release_Date+"&user_id=" + user_id + "&score=" +score + "&lat="+userLat + "&lng="+userLong,
+            data: "review="+review +"&title="+title+"&release_date="+release_Date+"&user_id=" + user_id + "&score=" +score + "&lat="+lat + "&lng="+lng + "&movie_id="+movie_id,
             success: function(result){
                     alert("Review save Success! " + JSON.stringify(result.Title));
                     //reload reviews
@@ -241,7 +247,10 @@
             //"&title="+title+"&release_date="+release_Date+"&synopsis="+synopsis+"&starring="+starring+"&awards="+awards+"&metascore="+metascore,
             success: function(result){
                     //$("#message")[0].value = "Success";
-                    alert("Movie save Success! " + JSON.stringify(result));
+                    alert("Movie save Success! " + result);
+                    sessionStorage.setItem("movie_id", result);
+                    //now also insert review
+                    insertReview();
             },
             error: function(xhr, status, error){
                 //$("#message")[0].value = "Ajax error!"+result;
@@ -274,8 +283,10 @@
       };
 
       //get gps co-ordinates when page first loadSearchData
-      $( document ).on( "pagecreate", function() {
-        getPosition();
+      $( document ).on( "pageshow", function() {
+        if($("#registerlink").is(":visible")){
+          getPosition();
+        };
       });
 
       //check user logged in on load of main-page data role, also grab gps position
@@ -789,7 +800,7 @@
     <textarea id="txtAreaReview" placeholder="What did you think?"></textarea>
     </div>
     <div id="submitbtn" style="width:70%; height:20%; margin-top:5%; margin-left:2%; float:left">
-    <input type="submit" name="submit" value="Submit" id="submit" onclick="saveMovie(),insertReview()"/>
+    <input type="submit" name="submit" value="Submit" id="submit" onclick="saveMovie()"/>
     </div>
     <div id="reviewSection">
     <div class="reviewSection">Reviews:</div>

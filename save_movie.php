@@ -98,6 +98,7 @@
           // run query
           $stmt = $db->prepare($query);
           $result = $stmt->execute($query_params);
+          $last_id = $db->lastInsertId();;
       }
       catch(PDOException $ex)
       {
@@ -110,7 +111,7 @@
       {
 
           $result = "Posted movie data!";
-          echo json_encode($result);
+          echo ($last_id);
       }
       else
       {

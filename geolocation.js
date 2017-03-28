@@ -26,12 +26,12 @@
 
                   $.each(result, function (key, value) {
                     var reviewLoc = new LatLon(Number(value.lat), Number(value.lng));
-                    alert("saved lat: "+value.lat + " saved lng: "+value.lng);
+                    //alert("saved lat: "+value.lat + " saved lng: "+value.lng);
                     //get distance
                     var dist = (((userLoc.distanceTo(reviewLoc)) /1000).toFixed(2));
-                    alert("istance: "+dist)
+                    //alert("istance: "+dist)
                     if(dist <= 100){
-                      $('#listviewpage2').append("<li onclick='loadMovieDataFromList(\x22" +  value.id + "\x22)'><a href='#'>"
+                      $('#listviewpage2').append("<li onclick='loadMovieDataFromList(\x22" +  value.movie_id + "\x22)'><a href='#'>"
                       + "<h2>" + value.movie_title + "</h2>"
                       +"<p> Your Score: " + value.score + "</p>" + "<p>" + value.review +"</p>" + "</a></li>").listview('refresh');;
                     }

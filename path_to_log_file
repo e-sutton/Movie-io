@@ -22,3 +22,5 @@
 [20-Mar-2017 21:35:49 Europe/Berlin] PHP Fatal error:  Unsupported operand types in /Applications/MAMP/htdocs/movie-io/load_public_user_page.php on line 57
 [20-Mar-2017 21:36:09 Europe/Berlin] PHP Fatal error:  Unsupported operand types in /Applications/MAMP/htdocs/movie-io/load_public_user_page.php on line 57
 [20-Mar-2017 21:57:33 Europe/Berlin] PHP Notice:  Undefined index: userid in /Applications/MAMP/htdocs/movie-io/load_public_user_page.php on line 22
+[28-Mar-2017 21:40:45 Europe/Berlin] PHP Deprecated:  mysql_insert_id(): The mysql extension is deprecated and will be removed in the future: use mysqli or PDO instead in /Applications/MAMP/htdocs/movie-io/save_movie.php on line 101
+[28-Mar-2017 21:41:37 Europe/Berlin] PHP Deprecated:  mysql_insert_id(): The mysql extension is deprecated and will be removed in the future: use mysqli or PDO instead in /Applications/MAMP/htdocs/movie-io/save_movie.php on line 101
