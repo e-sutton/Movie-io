@@ -51,7 +51,7 @@
             url: "load_mylist.php",
             success: function(result){
                     //$("#message")[0].value = "Success";
-                    alert("My List fetch success! " + result);
+                    //alert("My List fetch success! " + result);
                     result = $.parseJSON(result);
                     console.log(result);
                     $.each(result, function (key, value) {
@@ -80,7 +80,7 @@
           success: function(result){
                   console.log(result);
                   //$("#message")[0].value = "Success";
-                  alert("Movie for List fetch success! " + result);
+                  //alert("Movie for List fetch success! " + result);
                   loadMovieData(result);
                   window.location.replace("index.php#movie-page");
           },
@@ -98,7 +98,7 @@
             url: "load_user_reviews.php",
             success: function(result){
                     //$("#message")[0].value = "Success";
-                    alert("User reviews fetch success! " + result);
+                    //alert("User reviews fetch success! " + result);
                     result = $.parseJSON(result);
                     console.log(result);
                     $.each(result, function (key, value) {
@@ -124,7 +124,7 @@
             url: "load_public_user_reviews.php",
             success: function(result){
                     //$("#message")[0].value = "Success";
-                    alert("User reviews fetch success! " + result);
+                    //alert("User reviews fetch success! " + result);
                     result = $.parseJSON(result);
                     console.log(result);
                     $('#userReviews2').empty();
@@ -169,7 +169,7 @@
             data: "&title="+title,
             success: function(result){
                     //$("#message")[0].value = "Success";
-                    alert("Movie fetch success! " + result);
+                    //alert("Movie fetch success! " + result);
                     result = $.parseJSON(result);
                     console.log(result);
                     $('#reviews').empty();
@@ -202,13 +202,13 @@
         //console.log("movie id=" + movie_id);
         //var movie_id = movie_id.replace('"','').trim();
         //console.log("movie id=" + movie_id);
-        alert("review text: " + review + ", user id: "+user_id + ", title: " +title + ", release: " +release_Date + ", score " + score +" LatLng: " +lat+" "+lng + " movie_id="+movie_id);
+        //alert("review text: " + review + ", user id: "+user_id + ", title: " +title + ", release: " +release_Date + ", score " + score +" LatLng: " +lat+" "+lng + " movie_id="+movie_id);
         $.ajax({
             type: "POST",
             url: "review_movie.php",
             data: "review="+review +"&title="+title+"&release_date="+release_Date+"&user_id=" + user_id + "&score=" +score + "&lat="+lat + "&lng="+lng + "&movie_id="+movie_id,
             success: function(result){
-                    alert("Review save Success! " + JSON.stringify(result.Title));
+                    //alert("Review save Success! " + JSON.stringify(result.Title));
                     //reload reviews
                     loadReviews(null, title);
             },
@@ -247,7 +247,7 @@
             //"&title="+title+"&release_date="+release_Date+"&synopsis="+synopsis+"&starring="+starring+"&awards="+awards+"&metascore="+metascore,
             success: function(result){
                     //$("#message")[0].value = "Success";
-                    alert("Movie save Success! " + result);
+                    //alert("Movie save Success! " + result);
                     sessionStorage.setItem("movie_id", result);
                     //now also insert review
                     insertReview();
@@ -266,14 +266,14 @@
         var score = $('#ratingdiv2').raty('score');
         var created_by_user_id = $('#sessionuserid').text();
         var user_id = $('#useridhidden').text();
-        alert("review text: " + review + ", user id: "+user_id + ", score " + score);
+        //alert("review text: " + review + ", user id: "+user_id + ", score " + score);
         $.ajax({
             type: "POST",
             url: "review_user.php",
             data: "review="+review +"&created_by_user_id=" + created_by_user_id + "&score=" +score + "&user_id=" + user_id,
             success: function(result){
                     //$("#message")[0].value = "Success";
-                    alert("User Review save Success! " + JSON.stringify(result.Title));
+                    //alert("User Review save Success! " + JSON.stringify(result.Title));
             },
             error: function(xhr, status, error){
                 //$("#message")[0].value = "Ajax error!"+result;
@@ -293,6 +293,7 @@
       $( document ).on( "pagecreate", "#main-page", function() {
           checkLogin();
           loadGeoData();
+          //alert("sesh username: " + "<?php echo $_SESSION['username'];?>");
         });
 
 
@@ -350,7 +351,7 @@
                 dataType : 'json',
                 success: function(result){
                         //$("#message")[0].value = "Success";
-                        alert("Success! " + JSON.stringify(result.Title));
+                        //alert("Success! " + JSON.stringify(result.Title));
                         loadSearchData(result);
 
                 },
@@ -368,7 +369,7 @@
       });
 
       //cinemas page function
-                      $( document ).on( "pagecreate", "#map-page", function() {
+                    $( document ).on( "pagecreate", "#map-page", function() {
                     checkLogin();
                     //set map
                     var dublin = new google.maps.LatLng(53.348244, -6.267938);
@@ -413,7 +414,7 @@
       //movie page function
       function loadMovieData(e){
         //check for &nsbp in title
-        alert("title is " +e.movie_title);
+        //alert("title is " +e.movie_title);
         var title = "";
         if((e.Title.indexOf("&nsbp;")) != -1){
           title = e.Title.replace("&nbsp;"," ");
@@ -443,7 +444,7 @@
 
                 //$(document).ready(function(){
                     var user = $("#regusername")[0].value;
-                    alert("username : " + user);
+                    //alert("username : " + user);
                     var email = $("#email")[0].value;
                     var password = $("#regpassword")[0].value;
                     $.ajax({
@@ -452,7 +453,7 @@
                         data: "username="+user+"&email="+email+"&password="+password,
                         success: function(result){
                                 //$("#message")[0].value = "Success";
-                                alert("Success!");
+                                //alert("Success!");
                                 window.location = "index.html";
 
                         },
@@ -479,10 +480,18 @@
                         data: "username="+user+"&password="+password,
                         success: function(result){
 
-                                if (result === "Logged In")
+                                if (result != "Login Failed: Invalid Details")
                                 {
-                                    alert(JSON.stringify(result));
+                                    //alert(JSON.stringify(result));
                                     window.location.replace("index.php#main-page");
+                                    //populate user data
+                                    $("#namespan").html(result.username);
+                                    $("#emailspan").html(result.email);
+                                    $("#locationspan").html(result.location);
+                                    $("#aboutmespan").html(result.about_me);
+                                    $("#profileavatar").html("<img src="+ result.avatar +" style='max-width:100%; border-radius:0.5em; max-height:100%;'/>");
+                                    $("#sessionuserid").html(result.id);
+
                                 }
                                 else
                                 {
@@ -549,7 +558,7 @@
           data: formData,
           async: false,
           success: function(data){
-            alert("Update ajax worked " + data);
+            //alert("Update ajax worked " + data);
           },
           error: function(xhr, status, error){
               //$("#message")[0].value = "Ajax error!"+result;
@@ -566,14 +575,13 @@
     function goToPublicProfile(id){
       //get user name
       var userid = id;
-      alert("public id  = " + userid);
+      //alert("public id  = " + userid);
       $.ajax({
           type: "POST",
           url: "load_public_user_page.php",
           data: "userid=" + userid,
           success: function(result){
                   //$("#message")[0].value = "Success";
-                  alert("Public user load success! " + JSON.stringify(result));
                   //set hidden div to save user id for insertReview2() use
                   $('#useridhidden').html(userid);
                   //activate rating stars
@@ -582,6 +590,15 @@
                     starOn: 'images/star-on.png',
                     size: 24
                   });
+                  result = JSON.parse(result);
+                  //alert(JSON.stringify(result));
+                  //populate user data
+                  $("#namespan2").html(result.username);
+                  $("#emailspan2").html(result.email);
+                  $("#locationspan2").html(result.location);
+                  $("#aboutmespan2").html(result.about_me);
+                  $("#profileavatar2").html("<img src="+ result.avatar +" style='max-width:100%; border-radius:0.5em; max-height:100%;'/>");
+
                   //redirect user to public window
                   window.location.replace("index.php#public-profile-page");
           },
@@ -745,7 +762,6 @@
       </div>
 </div>
 </div>
-</p>
     <div id="listviewDiv2" class="ui-panel-wrapper">
       <ul data-role="listview" data-inset="true" id="listviewpage">
       </ul>
@@ -880,11 +896,11 @@
 </div>
 </div>
   <div id="profilediv" class="ui-panel-wrapper">
-    <div id="namediv" class="mainDivs">Username: <?php echo $_SESSION['username'];?></div>
+    <div id="namediv" class="mainDivs">Username: <span id="namespan"><?php echo $_SESSION['username']; ?></span></div>
     <div id="profileavatar" style="width:20%; height:20%; margin-top:5%; margin-right:2%; float:right;"><img src="<?php echo $_SESSION['avatar']; ?>" style="max-width:100%; border-radius:0.5em; max-height:100%;"/></div>
-    <div id="emaildiv" class="mainDivs">Email: <?php echo $_SESSION['email'];?></div>
-    <div id="aboutmediv" class="synopsis">About Me: <?php echo $_SESSION['about_me'];?></div>
-    <div id="locationdiv" class="mainDivs">My Location: <?php echo $_SESSION['location'];?></div>
+    <div id="emaildiv" class="mainDivs">Email: <span id="emailspan"><?php echo $_SESSION['email'];?></span></div>
+    <div id="aboutmediv" class="synopsis">About Me: <span id="aboutmespan"><?php echo $_SESSION['about_me'];?></span></div>
+    <div id="locationdiv" class="mainDivs">My Location: <span id="locationspan"><?php echo $_SESSION['location'];?></span></div>
     <p>
       <form id="formdata" method="post" enctype="multipart/form-data" class="mainDivs">
       <!--<div id="updatename" style="width:40%; height:80%; margin-top:5%; margin-left:2%; float:left">
@@ -937,11 +953,11 @@
 </div>
 </div>
   <div id="profilediv" class="ui-panel-wrapper">
-    <div id="namediv" class="mainDivs">Username: <?php echo $_SESSION['publicuser'];?></div>
-    <div id="profileavatar" style="width:20%; height:20%; margin-top:5%; margin-right:2%; float:right;"><img src="<?php echo $_SESSION['publicuseravatar']; ?>" style="max-width:100%; border-radius:0.5em; max-height:100%;"/></div>
-    <div id="emaildiv" class="mainDivs">Email: <?php echo $_SESSION['publicuseremail'];?></div>
-    <div id="aboutmediv" class="synopsis">About Me: <?php echo $_SESSION['publicuseremail'];?></div>
-    <div id="locationdiv" class="mainDivs">My Location: <?php echo $_SESSION['publicuserlocation'];?></div>
+    <div id="namediv2" class="mainDivs">Username: <span id="namespan2"><?php echo $_SESSION['publicuser'];?></span></div>
+    <div id="profileavatar2" style="width:20%; height:20%; margin-top:5%; margin-right:2%; float:right;"><img src="<?php echo $_SESSION['publicuseravatar']; ?>" style="max-width:100%; border-radius:0.5em; max-height:100%;"/></div>
+    <div id="emaildiv2" class="mainDivs">Email: <span id="emailspan2"><?php echo $_SESSION['publicuseremail'];?></span></div>
+    <div id="aboutmediv2" class="synopsis">About Me: <span id="aboutmespan2"><?php echo $_SESSION['publicuserabout'];?></span></div>
+    <div id="locationdiv2" class="mainDivs">My Location: <span id="locationspan2"><?php echo $_SESSION['publicuserlocation'];?></span></div>
     <p>
       <div id="ratingdiv2" data-role="none" class="mainDivs">
       </div>
@@ -971,6 +987,6 @@
   </div><!-- /footer -->
 </div>
 <!--hidden varibles to hold php values -->
-<div style="display: none;" id="sessionuserid"><?php echo $_SESSION['user']['id'];?></div>
+<div style="display: none;" id="sessionuserid"></div>
 </body>
 </html>

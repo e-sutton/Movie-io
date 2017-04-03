@@ -54,8 +54,14 @@
         if($login_ok)
         {
 
-            $result = "Fetched user data!";
-            echo json_encode($result);
+          echo json_encode(array(
+            "username" => $row['username'],
+            "email" => $row['email'],
+            "about_me" => $row['about_me'],
+            "location" => $row['location'],
+            "avatar" => $row['avatar'],
+            "id" => $row['id']
+          ));
         }
         else
         {

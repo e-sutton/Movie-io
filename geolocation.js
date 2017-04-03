@@ -56,7 +56,7 @@
         }
 
         function myPosition(position){
-          alert("Latitude: " + position.coords.latitude + "\nLongitude: " + position.coords.longitude);
+          //alert("Latitude: " + position.coords.latitude + "\nLongitude: " + position.coords.longitude);
           userLat = position.coords.latitude;
           userLong = position.coords.longitude;
           sessionStorage.setItem("userLat", userLat);
@@ -71,14 +71,14 @@
         radius = (radius === undefined) ? 6371e3 : Number(radius);
 
         var R = radius;
-        var φ1 = toRad(this.lat),  λ1 = toRad(this.lon);
-        var φ2 = toRad(point.lat), λ2 = toRad(point.lon);
-        var Δφ = φ2 - φ1;
-        var Δλ = λ2 - λ1;
+        var v1 = toRad(this.lat),  a1 = toRad(this.lon);
+        var v2 = toRad(point.lat), a2 = toRad(point.lon);
+        var v_total = v2 - v1;
+        var a_total = a2 - a1;
 
-        var a = Math.sin(Δφ/2) * Math.sin(Δφ/2)
-              + Math.cos(φ1) * Math.cos(φ2)
-              * Math.sin(Δλ/2) * Math.sin(Δλ/2);
+        var a = Math.sin(v_total/2) * Math.sin(v_total/2)
+              + Math.cos(v1) * Math.cos(v2)
+              * Math.sin(a_total/2) * Math.sin(a_total/2);
         var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
         var d = R * c;
 
