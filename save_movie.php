@@ -24,7 +24,7 @@
       //check if movie already saved
       $query = "
           SELECT
-              1
+              id
           FROM movies
           WHERE
               title = :movie_title
@@ -51,7 +51,7 @@
       // If a row is returned, then movie already saved
       if($row)
       {
-          echo("Movie already saved!");
+          echo ($row['id']);
           $saved = true;
       }
 

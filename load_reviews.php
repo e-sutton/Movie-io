@@ -27,7 +27,7 @@
 
       //Insert
       $query = "
-      SELECT a.review, a.score, b.username, b.location, b.avatar, b.id from movie_reviews a
+      SELECT a.review, a.score, b.username, b.location, b.avatar, b.id, a.date from movie_reviews a
       JOIN login b on (a.user_id = b.id)
         WHERE
         a.movie_title = :movie_title

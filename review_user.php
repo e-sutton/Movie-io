@@ -24,13 +24,15 @@
         user_id,
         created_by_user_id,
         score,
-        review
+        review,
+        date
         )
         VALUES(
           :user_id,
           :created_by_user_id,
           :score,
-          :review
+          :review,
+          now()
           )
       ";
 

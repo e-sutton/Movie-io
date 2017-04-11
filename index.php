@@ -32,7 +32,7 @@
   <!-- jquery mobile links/scripts -->
   <script src="jquery/jquery-2.1.4.min.js"></script>
   <script src="jquery/jquery.mobile-1.4.5.min.js"></script>
-  <script src="http://maps.googleapis.com/maps/api/js"></script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCbemj3wnglDaOnaT1Y6ud5bXJsXNLYmNA"></script>
   <script src="jquery/jquery.raty.js"></script>
   <script src="geolocation.js"></script>
   <!--<script src="SearchMovie.js"></script>-->
@@ -106,7 +106,7 @@
                       $('#userReviews').append(list);
                       console.log("key: " + key + " value: " +value.review);
                         list.append("<li onclick='goToPublicProfile(\x22" +  value.id + "\x22)'>" + "<div style='width:5%; height:5%;'><img src='" + value.avatar + "' style='max-width:100%; max-height:100%;'></div>"
-                        + "<h3>" + value.username + ", " + value.location + "</h3>"
+                        + "<h3>" + value.username + ", " + value.location + " : " + value.date +"</h3>"
                                     +"<h4> Score: " + value.score + "</h4>" + "<p>" + value.review +"</p>" + "</li>");
                     });
             },
@@ -132,7 +132,8 @@
                       var list = $('<ul></ul>');
                       $('#userReviews2').append(list);
                       console.log("key: " + key + " value: " +value.review);
-                        list.append("<li onclick='goToPublicProfile(\x22" +  value.id + "\x22)'>" + "<div style='width:5%; height:5%;'><img src='" + value.avatar + "' style='max-width:100%; max-height:100%;'></div>" + "<h3>" + value.username + ", " + value.location + "</h3>"
+                        list.append("<li onclick='goToPublicProfile(\x22" +  value.id + "\x22)'>" + "<div style='width:5%; height:5%;'><img src='" + value.avatar + "' style='max-width:100%; max-height:100%;'></div>"
+                        + "<h3>" + value.username + ", " + value.location + " : " + value.date + "</h3>"
                                     +"<h4> Score: " + value.score + "</h4>"+ "<p>" + value.review +"</p>" + "</li>");
                     });
             },
@@ -177,7 +178,7 @@
                       var list = $('<ul></ul>');
                       $('#reviews').append(list);
                       console.log("key: " + key + " value: " +value.review);
-                        list.append("<li onclick='goToPublicProfile(\x22" +  value.id + "\x22)'>" + "<div style='width:5%; height:5%;'><img src='" + value.avatar + "' style='max-width:100%; max-height:100%;'></div>" + "<h3>" + value.username + ", " + value.location + "</h3>" + "<h4> Score: " + value.score + "</h4>"
+                        list.append("<li onclick='goToPublicProfile(\x22" +  value.id + "\x22)'>" + "<div style='width:5%; height:5%;'><img src='" + value.avatar + "' style='max-width:100%; max-height:100%;'></div>" + "<h3>" + value.username + ", " + value.location + " : "+ value.date +"</h3>" + "<h4> Score: " + value.score + "</h4>"
                                     + "<p>" + value.review +"</p>" + "</li>");
                     });
             },
@@ -274,6 +275,7 @@
             success: function(result){
                     //$("#message")[0].value = "Success";
                     //alert("User Review save Success! " + JSON.stringify(result.Title));
+                    loadPublicUserReviews();
             },
             error: function(xhr, status, error){
                 //$("#message")[0].value = "Ajax error!"+result;
@@ -368,8 +370,8 @@
         });
       });
 
-      //cinemas page function
-                    $( document ).on( "pagecreate", "#map-page", function() {
+                    //cinemas page function
+                    /*$( document ).on( "pagecreate", "#map-page", function() {
                     checkLogin();
                     //set map
                     var dublin = new google.maps.LatLng(53.348244, -6.267938);
@@ -383,10 +385,11 @@
                         },
 
                     };
-                  map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+                  var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+                  google.maps.event.trigger(map, 'resize');
                     //google.maps.event.trigger(map, 'resize');
                     //put marker on map
-                    google.maps.event.addListener(map, 'click', function(e) {
+                    /*google.maps.event.addListener(map, 'click', function(e) {
                         var marker = new google.maps.Marker({
                             position: e.latLng,
                             map: map,
@@ -397,7 +400,7 @@
                         //focus view on current marker
                         map.panTo(e.latLng);
         });
-    });
+    });*/
 
   function loadSearchData(e){
       //add movie title to global variable
@@ -758,7 +761,7 @@
         <a href="#leftpanel2"><img src="jquery/images/icons-png/bullets-white.png"/></a>
       </div>
       <div id="facebookicon">
-        <a href="https://www.facebook.com/sharer/sharer.php?u=http://URLHERE?id=30&picture=&title=&caption=Movie-io&quote=Heres a list of my favourite movies on Movie-io!&description="><img class="facebookimg" src="images/facebook.jpeg"/></a>
+        <a href="https://www.facebook.com/sharer/sharer.php?u=localhost:8888/movie-io/public-list-page.php?id=30&picture=&title=&caption=Movie-io&quote=Heres a list of my favourite movies on Movie-io!&description="><img class="facebookimg" src="images/facebook.jpeg"/></a>
       </div>
 </div>
 </div>
@@ -858,8 +861,16 @@
       </div>
 </div>
 </div>
-        <div role="main" class="ui-content ui-panel-wrapper" id="map-canvas">
+        <div role="main" class="ui-content ui-panel-wrapper">
+          <div id="map-canvas" style="width:100%;height:400px;">
+            <iframe
+              width="600"
+              height="450"
+              frameborder="0" style="border:0"
+              src="https://www.google.com/maps/embed/v1/search?key=AIzaSyCoSolGmCfXef_f3hK7qtxWdUFGwCfFQqE&center=53.348244,-6.267938&zoom=9&q=cinemas+in+Dublin" allowfullscreen>
+            </iframe>
             <!-- map loads here... -->
+          </div>
         </div>
 
        <div data-role="footer" data-id="search-page-footer" data-position="fixed" data-tap-toggle="false">
@@ -987,6 +998,6 @@
   </div><!-- /footer -->
 </div>
 <!--hidden varibles to hold php values -->
-<div style="display: none;" id="sessionuserid"></div>
+<div style="display: none;" id="sessionuserid"><?php echo $_SESSION['user']['id']; ?></div>
 </body>
 </html>

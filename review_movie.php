@@ -32,7 +32,8 @@
         movie_title,
         movie_id,
         lat,
-        lng
+        lng,
+        date
         )
         VALUES(
           :user_id,
@@ -42,7 +43,8 @@
           :movie_title,
           :movie_id,
           :lat,
-          :lng
+          :lng,
+          now()
           )
       ";
 
