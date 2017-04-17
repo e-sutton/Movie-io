@@ -11,6 +11,140 @@
 
 
 /* Globals */
+/*---Custom CSS---*/
+
+.facebookimg {
+  width:50px;
+  height:50px;
+  border-radius:0.5em;
+
+}
+
+#facebookicon{
+  float: right;
+}
+
+/*review li and div*/
+.userReviews ul {
+  list-style-type: none;
+  width: 70% !important;
+}
+
+.userReviews h3 {
+  font: bold 20px/1.5 Helvetica, Verdana, sans-serif;
+}
+
+.userReviews li img {
+  float: left;
+  margin: 0 15px 0 0;
+}
+
+.userReviews li p {
+  font: 200 16px/1.5 Georgia, sans-serif;
+}
+
+.userReviews li {
+  padding: 10px;
+  overflow: auto;
+  border-radius: 1em;
+}
+
+.userReviews li:hover {
+  cursor: pointer;
+	background: #ed0c24 /*{a-bup-background-color}*/;
+	color: #ffffff /*{a-bup-color}*/;
+}
+
+/*menus*/
+.rightMenu {
+    position: absolute;
+    top:-10%;
+    right:-2%;
+    width: 100px !important;
+}
+
+.rightMenu .ui-collapsible-content .ui-listview {
+    margin: -10px -15px -10px -35px !important;
+}
+
+.leftMenu {
+    position: absolute;
+    top: -10%;
+    right: 91.5%;
+    width: 100px !important;
+}
+
+.leftMenu .ui-collapsible-content .ui-listview {
+    margin: 10px 15px 10px 35px !important;
+}
+
+#leftpanel1 {
+    border-right: 10px solid #ed0c24;
+		border-right-width: medium;
+}
+
+/*star rating */
+
+
+span{
+padding-left: 15px;
+}
+
+/*divs of review page*/
+.mainDivs{
+    width:70%;
+    height:20%;
+    margin-top:5%;
+    margin-left:2%;
+    float:left;
+}
+
+.synopsis{
+    width:70%;
+    height:40%;
+    margin-top:5%;
+    margin-left:2%;
+    float:left;
+}
+
+.posterdiv{
+    width:25%;
+    height:25%;
+    margin-top:5%;
+    margin-right:2%;
+    float:right;
+}
+
+
+.reviewSection{
+    width: 100%;
+    height:20%;
+    margin-top:5%;
+    margin-left:auto;
+    margin-right: auto;
+    float:left;
+    text-align: center;
+    color: white;
+}
+
+.userReviews{
+    width: 95%;
+    height:20%;
+    margin-top:5%;
+    margin-left:2%;
+    margin-right: auto;
+    float:left;
+    text-align: left;
+}
+
+#map-canvas{
+    width:90%;
+    height:80%;
+}
+
+
+/*---Custom CSS---*/
+
 /* Font
 -----------------------------------------------------------------------------------------------------------*/
 html {
@@ -204,7 +338,7 @@ html .ui-alt-icon .ui-radio-off:after {
 	width: 8px;
 	height: 8px;
 	border-width: 5px;
-	border-style: solid; 
+	border-style: solid;
 }
 .ui-alt-icon.ui-btn.ui-radio-on:after,
 .ui-alt-icon .ui-btn.ui-radio-on:after {
@@ -264,7 +398,7 @@ html .ui-panel-page-container-a {
 html .ui-bar-a a,
 html .ui-body-a a,
 html body .ui-group-theme-a a {
-	color: #2a6acf /*{a-link-color}*/;
+	color: #1291f8 /*{a-link-color}*/;
 	font-weight: bold;
 }
 .ui-page-theme-a a:visited,
@@ -348,8 +482,8 @@ html .ui-bar-a .ui-slider-track .ui-btn-active,
 html .ui-body-a .ui-slider-track .ui-btn-active,
 html body .ui-group-theme-a .ui-slider-track .ui-btn-active,
 html body div.ui-slider-track.ui-body-a .ui-btn-active {
-	background-color: #ed0c24 /*{a-active-background-color}*/;
-	border-color: #000000 /*{a-active-border}*/;
+	background-color: #3388cc /*{a-active-background-color}*/;
+	border-color: #3388cc /*{a-active-border}*/;
 	color: #ffffff /*{a-active-color}*/;
 	text-shadow: 0 /*{a-active-shadow-x}*/ 1px /*{a-active-shadow-y}*/ 0 /*{a-active-shadow-radius}*/ #005599 /*{a-active-shadow-color}*/;
 }
@@ -359,7 +493,7 @@ html .ui-bar-a .ui-radio-on:after,
 html .ui-body-a .ui-radio-on:after,
 html body .ui-group-theme-a .ui-radio-on:after,
 .ui-btn.ui-radio-on.ui-btn-a:after {
-	border-color: #ed0c24 /*{a-active-background-color}*/;
+	border-color: #3388cc /*{a-active-background-color}*/;
 }
 /* Focus */
 .ui-page-theme-a .ui-btn:focus,
@@ -374,9 +508,9 @@ html .ui-body-a .ui-focus,
 html body .ui-group-theme-a .ui-focus,
 html head + body .ui-btn-a.ui-focus,
 html head + body .ui-body-a.ui-focus {
-	-webkit-box-shadow: 0 0 12px #ed0c24 /*{a-active-background-color}*/;
-	-moz-box-shadow: 0 0 12px #ed0c24 /*{a-active-background-color}*/;
-	box-shadow: 0 0 12px #ed0c24 /*{a-active-background-color}*/;
+	-webkit-box-shadow: 0 0 12px #3388cc /*{a-active-background-color}*/;
+	-moz-box-shadow: 0 0 12px #3388cc /*{a-active-background-color}*/;
+	box-shadow: 0 0 12px #3388cc /*{a-active-background-color}*/;
 }
 /* B
 -----------------------------------------------------------------------------------------------------------*/
@@ -908,4 +1042,3 @@ button[disabled],
 	outline-width: 1px;
 	outline-style: auto;
 }
-			

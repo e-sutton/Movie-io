@@ -32,17 +32,31 @@
   <!-- jquery mobile links/scripts -->
   <script src="jquery/jquery-2.1.4.min.js"></script>
   <script src="jquery/jquery.mobile-1.4.5.min.js"></script>
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCbemj3wnglDaOnaT1Y6ud5bXJsXNLYmNA"></script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBE3e4Xerq2saFeitH6Dooaqy_zS1fSM0"></script>
   <script src="jquery/jquery.raty.js"></script>
   <script src="geolocation.js"></script>
-  <!--<script src="SearchMovie.js"></script>-->
-  <link rel="stylesheet" href="jquery/themes/MovieO_Red.css"/>
+
+  <!-- Stylesheets -->
   <link rel="stylesheet" href="jquery/jquery.raty.css"/>
   <link rel="stylesheet" href="jquery/themes/jquery.mobile.icons.min.css" />
-  <link href="jquery/jquery.mobile.structure-1.4.5.css" rel="stylesheet" />
+  <link rel="stylesheet" href="jquery/themes/MovieO_Light.css" id="light" />
+  <link rel="stylesheet alternate" href="jquery/themes/MovieO_Dark.css" id="dark" />
+  <link rel="stylesheet" href="jquery/jquery.mobile.structure-1.4.5.css" />
   <meta name="viewport" content="width=device-width, initial-scale=1"> <!--sizing -->
   <script>
 
+      //toggle stylesheets
+      function toggleStyles(){
+      $('.flip-checkbox-2').on('change', function() {
+        var href = $('#light').attr('href');
+        if(href == 'jquery/themes/MovieO_Light.css'){
+          $('#light').attr('href','jquery/themes/MovieO_Dark.css');
+        }
+        else{
+          $('#light').attr('href','jquery/themes/MovieO_Light.css');
+        }
+      });
+    }
       //load MyList page movies
       //on page load
       $( document ).on( "pagecreate", "#list-page", function() {
@@ -295,7 +309,7 @@
       $( document ).on( "pagecreate", "#main-page", function() {
           checkLogin();
           loadGeoData();
-          //alert("sesh username: " + "<?php echo $_SESSION['username'];?>");
+          toggleStyles();
         });
 
 
@@ -371,36 +385,33 @@
       });
 
                     //cinemas page function
-                    /*$( document ).on( "pagecreate", "#map-page", function() {
+                    $( document ).on( "pageshow", "#map-page", function() {
                     checkLogin();
-                    //set map
-                    var dublin = new google.maps.LatLng(53.348244, -6.267938);
-                    var mapOptions = {
-                        center: dublin,
-                        mapTypeId: google.maps.MapTypeId.ROADMAP,
-                        zoom: 9,
-                        zoomControl: true,
-                        zoomControlOptions: {
-                            position: google.maps.ControlPosition.RIGHT_CENTER
-                        },
 
-                    };
-                  var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
-                  google.maps.event.trigger(map, 'resize');
-                    //google.maps.event.trigger(map, 'resize');
-                    //put marker on map
-                    /*google.maps.event.addListener(map, 'click', function(e) {
-                        var marker = new google.maps.Marker({
-                            position: e.latLng,
-                            map: map,
-                            draggable: true, //set marker draggable
-                            animation: google.maps.Animation.DROP //bounce animation
-                        });
+                    //geocoder
+                    var geocoder = new google.maps.Geocoder;
 
-                        //focus view on current marker
-                        map.panTo(e.latLng);
-        });
-    });*/
+                      var lat1 = sessionStorage.getItem("userLat");
+                      var lng1 = sessionStorage.getItem("userLong");
+                      var latLong = lat1 + "," +lng1;
+
+                      var input = latLong;
+                      var latlngStr = input.split(',', 2);
+                      var latlng = {lat: parseFloat(latlngStr[0]), lng: parseFloat(latlngStr[1])};
+                      //use geocoder to find current place name and use that to grab results of map search query
+                      geocoder.geocode({'location': latlng}, function(results, status) {
+                        if (status == "OK"){
+                          if (results[0]){
+                            var currentLoc = results[0].address_components[5].long_name;
+                            //alert("location name = " + results[0].address_components[5].long_name);
+                            //load map
+                            $('#map-canvas').html('<iframe width="100%" height="70%" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/search?key=AIzaSyCoSolGmCfXef_f3hK7qtxWdUFGwCfFQqE&center='+ latLong +'&zoom=11&q=cinemas+near+'+ currentLoc +'" allowfullscreen></iframe>');
+                            //$('#map-canvas').css('background-color','red');
+                            //$('#map-canvas').attr('style', 'background-color: red !important');
+                          };
+                        };
+                      });
+                    });
 
   function loadSearchData(e){
       //add movie title to global variable
@@ -425,12 +436,12 @@
         else{
           title = e.Title;
         }
-        $('#title').html('<h2 style="color:white !important">' + title +'</h2>');
+        $('#title').html('<h2>' + title +'</h2>');
          $('#releasedate').html('Release Date: ' +e.Released);
           $('#synopsis').html(e.Plot);
-          $('#starring').html('Starring: ' + e.Actors);
-          $('#awards').html('Awards: ' + e.Awards);
-          $('#metascore').html(' Metascore: ' + e.Metascore);
+          $('#starring').html(e.Actors);
+          $('#awards').html(e.Awards);
+          $('#metascore').html(e.Metascore);
           $('#posterdiv').html('<img id="posterimg" src="' + e.Poster +'" style="max-width:100%; max-height:100%;"/>');
           //load star ratings
           $('#ratingdiv').raty({
@@ -620,7 +631,7 @@
 </head>
 <body>
     <div data-role="page" id="loginpage">
-        <div data-role="header" data-theme="a">
+        <div data-role="header" data-theme="b">
           <div style="text-align: center">
             <span id="mainTitle">Welcome to Movie iO!</span>
           </div>
@@ -641,7 +652,7 @@
     </div>
 
     <div data-role="page" id="registerpage">
-      <div data-role="header" data-theme="a">
+      <div data-role="header" data-theme="b">
         </div>
          <div role="main" class="ui-content">
             <div id="signuparea" style="text-align:center">
@@ -663,7 +674,7 @@
 <!--Box Office/Main Page-->
 
     <div data-role="page" id="main-page" data-url="main-page">
-            <div data-role="panel" id="leftpanel1" data-position="left" data-display="reveal" data-theme="a"
+            <div data-role="panel" id="leftpanel1" data-position="left" data-display="reveal" data-theme="b"
             class="ui-panel ui-panel-position-left ui-panel-display-reveal ui-body-a ui-panel-animate ui-panel-closed">
 
         <div class="ui-panel-inner">
@@ -673,12 +684,14 @@
           <p><a href="" onclick="logout()" data-rel="close" class="ui-btn ui-shadow ui-corner-all ui-btn-a ui-btn-inline">Log Out</a> </p>
         </div>
           </div>
-        <div data-role="header" data-theme="a" data-position="fixed">
-            <div data-role="navbar" data-theme="a">
-              <div id="headertext" style="text-align:center">
-                <span>Movie io</span>
+        <div data-role="header" data-theme="b" data-position="fixed">
+            <div data-role="navbar" data-theme="b">
+              <div class="headertext">
+                <span class="pagetitle">Movie io</span>
+              </br>
+              <input type="checkbox" data-role="flipswitch" name="flip-checkbox-2" class="flip-checkbox-2" data-on-text="Dark" data-off-text="Light"/>
                 </div>
-                <div id="leftIcon" style="margin-right:-20%;">
+                <div class="leftIcon">
                   <a href="#leftpanel1"><img src="jquery/images/icons-png/bullets-white.png"/></a>
                 </div>
         </div>
@@ -701,7 +714,7 @@
 <!--Search Pagae-->
 
 <div data-role="page" id="search-page" data-url="search-page" data-transition="slidedown">
-  <div data-role="panel" id="leftpanel2" data-position="left" data-display="reveal" data-theme="a"
+  <div data-role="panel" id="leftpanel2" data-position="left" data-display="reveal" data-theme="b"
   class="ui-panel ui-panel-position-left ui-panel-display-reveal ui-body-a ui-panel-animate ui-panel-closed">
 
 <div class="ui-panel-inner">
@@ -711,10 +724,12 @@
 <p><a href="" onclick="logout()" data-rel="close" class="ui-btn ui-shadow ui-corner-all ui-btn-a ui-btn-inline">Log Out</a> </p>
 </div>
 </div>
-<div data-role="header" data-theme="a" data-position="fixed">
-  <div data-role="navbar" data-theme="a">
-    <div id="headertext" style="text-align:center">
-      <span>Movie io</span>
+<div data-role="header" data-theme="b" data-position="fixed">
+  <div data-role="navbar" data-theme="b">
+    <div class="headertext">
+      <span class="pagetitle">Movie io</span>
+    </br>
+      <input type="checkbox" data-role="flipswitch" name="flip-checkbox-2" class="flip-checkbox-2" data-on-text="Dark" data-off-text="Light"/>
       </div>
       <div id="leftIcon" style="margin-right:-20%;">
         <a href="#leftpanel2"><img src="jquery/images/icons-png/bullets-white.png"/></a>
@@ -742,7 +757,7 @@
 <!--List Page-->
 
 <div data-role="page" id="list-page" data-url="list-page" data-transition="slidedown">
-  <div data-role="panel" id="leftpanel2" data-position="left" data-display="reveal" data-theme="a"
+  <div data-role="panel" id="leftpanel2" data-position="left" data-display="reveal" data-theme="b"
   class="ui-panel ui-panel-position-left ui-panel-display-reveal ui-body-a ui-panel-animate ui-panel-closed">
 
 <div class="ui-panel-inner">
@@ -752,16 +767,18 @@
 <p><a href="" onclick="logout()" data-rel="close" class="ui-btn ui-shadow ui-corner-all ui-btn-a ui-btn-inline">Log Out</a> </p>
 </div>
 </div>
-<div data-role="header" data-theme="a" data-position="fixed">
-  <div data-role="navbar" data-theme="a">
-    <div id="headertext" style="text-align:center">
-      <span>Movie io</span>
+<div data-role="header" data-theme="b" data-position="fixed">
+  <div data-role="navbar" data-theme="b">
+    <div class="headertext">
+      <span class="pagetitle">Movie io</span>
+      </br>
+      <input type="checkbox" data-role="flipswitch" name="flip-checkbox-2" class="flip-checkbox-2" data-on-text="Dark" data-off-text="Light"/>
       </div>
       <div id="leftIcon" style="margin-right:-20%; float:left; width:50px; height:50px;">
         <a href="#leftpanel2"><img src="jquery/images/icons-png/bullets-white.png"/></a>
       </div>
       <div id="facebookicon">
-        <a href="https://www.facebook.com/sharer/sharer.php?u=localhost:8888/movie-io/public-list-page.php?id=30&picture=&title=&caption=Movie-io&quote=Heres a list of my favourite movies on Movie-io!&description="><img class="facebookimg" src="images/facebook.jpeg"/></a>
+        <a href="https://www.facebook.com/sharer/sharer.php?u=http://www.google.ie&picture=&title=&caption=Movie-io&quote=Heres+a+list+of+my+favourite+movies+on+Movie-io!&description="><img class="facebookimg" src="images/facebook.jpeg"/></a>
       </div>
 </div>
 </div>
@@ -784,7 +801,7 @@
 
 <!--View Movie page -->
 <div data-role="page" id="movie-page" data-url="movie-page" data-transition="slidedown">
-  <div data-role="panel" id="leftpanel2" data-position="left" data-display="reveal" data-theme="a"
+  <div data-role="panel" id="leftpanel2" data-position="left" data-display="reveal" data-theme="b"
   class="ui-panel ui-panel-position-left ui-panel-display-reveal ui-body-a ui-panel-animate ui-panel-closed">
 
 <div class="ui-panel-inner">
@@ -794,10 +811,12 @@
 <p><a href="" onclick="logout()" data-rel="close" class="ui-btn ui-shadow ui-corner-all ui-btn-a ui-btn-inline">Log Out</a> </p>
 </div>
 </div>
-<div data-role="header" data-theme="a" data-position="fixed">
-  <div data-role="navbar" data-theme="a">
-    <div id="headertext" style="text-align:center">
-      <span>Movie io</span>
+<div data-role="header" data-theme="b" data-position="fixed">
+  <div data-role="navbar" data-theme="b">
+    <div class="headertext">
+      <span class="pagetitle">Movie io</span>
+      </br>
+      <input type="checkbox" data-role="flipswitch" name="flip-checkbox-2" class="flip-checkbox-2" data-on-text="Dark" data-off-text="Light"/>
       </div>
       <div id="leftIcon" style="margin-right:-20%;">
         <a href="#leftpanel2"><img src="jquery/images/icons-png/bullets-white.png"/></a>
@@ -841,7 +860,7 @@
 <!--Cinema page -->
 
     <div data-role="page" id="map-page" data-url="map-page">
-  <div data-role="panel" id="leftpanel2" data-position="left" data-display="reveal" data-theme="a"
+  <div data-role="panel" id="leftpanel2" data-position="left" data-display="reveal" data-theme="b"
   class="ui-panel ui-panel-position-left ui-panel-display-reveal ui-body-a ui-panel-animate ui-panel-closed">
 
 <div class="ui-panel-inner">
@@ -851,24 +870,20 @@
 <p><a href="" onclick="logout()" data-rel="close" class="ui-btn ui-shadow ui-corner-all ui-btn-a ui-btn-inline">Log Out</a> </p>
 </div>
 </div>
-<div data-role="header" data-theme="a" data-position="fixed">
-  <div data-role="navbar" data-theme="a">
-    <div id="headertext" style="text-align:center">
-      <span>Movie io</span>
+<div data-role="header" data-theme="b" data-position="fixed">
+  <div data-role="navbar" data-theme="b">
+    <div class="headertext">
+      <span class="pagetitle">Movie io</span>
+      </br>
+      <input type="checkbox" data-role="flipswitch" name="flip-checkbox-2" class="flip-checkbox-2" data-on-text="Dark" data-off-text="Light"/>
       </div>
       <div id="leftIcon" style="margin-right:-20%;">
         <a href="#leftpanel2"><img src="jquery/images/icons-png/bullets-white.png"/></a>
       </div>
 </div>
 </div>
-        <div role="main" class="ui-content ui-panel-wrapper">
-          <div id="map-canvas" style="width:100%;height:400px;">
-            <iframe
-              width="600"
-              height="450"
-              frameborder="0" style="border:0"
-              src="https://www.google.com/maps/embed/v1/search?key=AIzaSyCoSolGmCfXef_f3hK7qtxWdUFGwCfFQqE&center=53.348244,-6.267938&zoom=9&q=cinemas+in+Dublin" allowfullscreen>
-            </iframe>
+        <div class="ui-content ui-panel-wrapper">
+          <div id="map-canvas" style="height:100%; width:100%">
             <!-- map loads here... -->
           </div>
         </div>
@@ -886,7 +901,7 @@
 
 <!--profile page -->
 <div data-role="page" id="profile-page" data-url="profile-page" data-transition="slidedown">
-  <div data-role="panel" id="leftpanel2" data-position="left" data-display="reveal" data-theme="a"
+  <div data-role="panel" id="leftpanel2" data-position="left" data-display="reveal" data-theme="b"
   class="ui-panel ui-panel-position-left ui-panel-display-reveal ui-body-a ui-panel-animate ui-panel-closed">
 
 <div class="ui-panel-inner">
@@ -896,10 +911,12 @@
 <p><a href="" onclick="logout()" data-rel="close" class="ui-btn ui-shadow ui-corner-all ui-btn-a ui-btn-inline">Log Out</a> </p>
 </div>
 </div>
-<div data-role="header" data-theme="a" data-position="fixed">
-  <div data-role="navbar" data-theme="a">
-    <div id="headertext" style="text-align:center">
-      <span>Movie io</span>
+<div data-role="header" data-theme="b" data-position="fixed">
+  <div data-role="navbar" data-theme="b">
+    <div class="headertext">
+      <span class="pagetitle">Movie io</span>
+      </br>
+      <input type="checkbox" data-role="flipswitch" name="flip-checkbox-2" class="flip-checkbox-2" data-on-text="Dark" data-off-text="Light"/>
       </div>
       <div id="leftIcon" style="margin-right:-20%;">
         <a href="#leftpanel2"><img src="jquery/images/icons-png/bullets-white.png"/></a>
@@ -943,7 +960,7 @@
 
 <!--PUBLIC profile page -->
 <div data-role="page" id="public-profile-page" data-url="public-profile-page" data-transition="slidedown">
-  <div data-role="panel" id="leftpanel2" data-position="left" data-display="reveal" data-theme="a"
+  <div data-role="panel" id="leftpanel2" data-position="left" data-display="reveal" data-theme="b"
   class="ui-panel ui-panel-position-left ui-panel-display-reveal ui-body-a ui-panel-animate ui-panel-closed">
 
 <div class="ui-panel-inner">
@@ -953,10 +970,12 @@
 <p><a href="" onclick="logout()" data-rel="close" class="ui-btn ui-shadow ui-corner-all ui-btn-a ui-btn-inline">Log Out</a> </p>
 </div>
 </div>
-<div data-role="header" data-theme="a" data-position="fixed">
-  <div data-role="navbar" data-theme="a">
-    <div id="headertext" style="text-align:center">
-      <span>Movie io</span>
+<div data-role="header" data-theme="b" data-position="fixed">
+  <div data-role="navbar" data-theme="b">
+    <div class="headertext">
+      <span class="pagetitle">Movie io</span>
+      </br>
+      <input type="checkbox" data-role="flipswitch" name="flip-checkbox-2" class="flip-checkbox-2" data-on-text="Dark" data-off-text="Light"/>
       </div>
       <div id="leftIcon" style="margin-right:-20%;">
         <a href="#leftpanel2"><img src="jquery/images/icons-png/bullets-white.png"/></a>
