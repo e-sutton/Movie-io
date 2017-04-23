@@ -423,7 +423,7 @@
       movieTitle = e.Title;
       $('#autocomplete').html(
         '<li class="ui-first-child ui-last-child"><a href="#movie-page" class="ui-btn ui-btn-icon-right ui-icon-carat-r"> <img src="'+ e.Poster + '">'+
-        '<h2 style="color:white !important">' + e.Title.replace("&nbsp;"," ") + '</h2>'+
+        '<h2 id="searchTitle">' + e.Title.replace("&nbsp;"," ") + '</h2>'+
         '<div><p>' + e.Plot + '</p></div>'+
         '<p class="ui-li-aside">' + e.Released+ '</p></a></li>'
       );
@@ -783,7 +783,7 @@
         <a href="#leftpanel2"><img src="jquery/images/icons-png/bullets-white.png"/></a>
       </div>
       <div id="facebookicon">
-        <a href="https://www.facebook.com/sharer/sharer.php?u=http://www.google.ie&picture=&title=&caption=Movie-io&quote=Heres+a+list+of+my+favourite+movies+on+Movie-io!&description="><img class="facebookimg" src="images/facebook.jpeg"/></a>
+        <a href="https://www.facebook.com/sharer/sharer.php?u=https://movie-io.byethost7.com/index.php#public-list-page?id=30&picture=&title=&caption=Movie-io&quote=Heres+a+list+of+my+favourite+movies+on+Movie-io!&description="><img class="facebookimg" src="images/facebook.jpeg"/></a>
       </div>
 </div>
 </div>

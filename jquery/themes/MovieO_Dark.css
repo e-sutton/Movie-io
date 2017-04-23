@@ -46,6 +46,14 @@
   color: white !important;
 }
 
+#autocomplete h2 {
+  color: #ed0c24;
+}
+
+#autocomplete:hover  h2 {
+	color: #ffffff !important/*{a-bup-color}*/;
+}
+
 
 #facebookicon{
 position: fixed; top: 0; right: 0; border: 0;

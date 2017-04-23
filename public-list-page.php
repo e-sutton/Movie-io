@@ -1,3 +1,18 @@
+<?php
+/*
+* public-list-page.php *
+* Rev 1 *
+* 26/02/2017 *
+*
+* @author Eoin Sutton *
+* @reference (star rating): https://github.com/wbotelhos/raty
+*/
+
+// get connection to DB
+include("connection.php");
+
+?>
+
 <!DOCTYPE html>
 
 <html>
@@ -6,13 +21,15 @@
   <!-- jquery mobile links/scripts -->
   <script src="jquery/jquery-2.1.4.min.js"></script>
   <script src="jquery/jquery.mobile-1.4.5.min.js"></script>
-  <script src="http://maps.googleapis.com/maps/api/js"></script>
   <script src="jquery/jquery.raty.js"></script>
-  <!--<script src="SearchMovie.js"></script>-->
-  <link rel="stylesheet" href="jquery/themes/MovieO_Red.css"/>
+  <script src="geolocation.js"></script>
+
+  <!-- Stylesheets -->
   <link rel="stylesheet" href="jquery/jquery.raty.css"/>
   <link rel="stylesheet" href="jquery/themes/jquery.mobile.icons.min.css" />
-  <link href="jquery/jquery.mobile.structure-1.4.5.css" rel="stylesheet" />
+  <link rel="stylesheet" href="jquery/themes/MovieO_Light.css" id="light" />
+  <link rel="stylesheet alternate" href="jquery/themes/MovieO_Dark.css" id="dark" />
+  <link rel="stylesheet" href="jquery/jquery.mobile.structure-1.4.5.css" />
   <meta name="viewport" content="width=device-width, initial-scale=1"> <!--sizing -->
   <script>
   var id = "<?php echo $_GET['id'];?>";
