@@ -47,16 +47,20 @@
 
       //toggle stylesheets
       function toggleStyles(){
-      $('.flip-checkbox-2').on('change', function() {
+      $('.toggleBtn').on('click', function() {
         var href = $('#light').attr('href');
         if(href == 'jquery/themes/MovieO_Light.css'){
           $('#light').attr('href','jquery/themes/MovieO_Dark.css');
+          //$(".flip-checkbox-2").val("dark");
         }
         else{
           $('#light').attr('href','jquery/themes/MovieO_Light.css');
+          //$(".flip-checkbox-2").val("light");
         }
+    //$(".flip-checkbox-2:visible").flipswitch().flipswitch( "refresh" );
       });
     }
+
       //load MyList page movies
       //on page load
       $( document ).on( "pagecreate", "#list-page", function() {
@@ -81,6 +85,7 @@
                 alert("User review fetch error " + xhr.responseText);
             }
         });
+        //toggleBtn();
 
     });
 
@@ -687,9 +692,9 @@
         <div data-role="header" data-theme="b" data-position="fixed">
             <div data-role="navbar" data-theme="b">
               <div class="headertext">
-                <span class="pagetitle">Movie io</span>
+              <span class="pagetitle">Movie io</span>
               </br>
-              <input type="checkbox" data-role="flipswitch" name="flip-checkbox-2" class="flip-checkbox-2" data-on-text="Dark" data-off-text="Light"/>
+                <button class="toggleBtn ui-btn-b">Switch Theme</button>
                 </div>
                 <div class="leftIcon">
                   <a href="#leftpanel1"><img src="jquery/images/icons-png/bullets-white.png"/></a>
@@ -729,7 +734,7 @@
     <div class="headertext">
       <span class="pagetitle">Movie io</span>
     </br>
-      <input type="checkbox" data-role="flipswitch" name="flip-checkbox-2" class="flip-checkbox-2" data-on-text="Dark" data-off-text="Light"/>
+    <button class="toggleBtn">Switch Theme</button>
       </div>
       <div id="leftIcon" style="margin-right:-20%;">
         <a href="#leftpanel2"><img src="jquery/images/icons-png/bullets-white.png"/></a>
@@ -772,7 +777,7 @@
     <div class="headertext">
       <span class="pagetitle">Movie io</span>
       </br>
-      <input type="checkbox" data-role="flipswitch" name="flip-checkbox-2" class="flip-checkbox-2" data-on-text="Dark" data-off-text="Light"/>
+      <button class="toggleBtn">Switch Theme</button>
       </div>
       <div id="leftIcon" style="margin-right:-20%; float:left; width:50px; height:50px;">
         <a href="#leftpanel2"><img src="jquery/images/icons-png/bullets-white.png"/></a>
@@ -811,12 +816,12 @@
 <p><a href="" onclick="logout()" data-rel="close" class="ui-btn ui-shadow ui-corner-all ui-btn-a ui-btn-inline">Log Out</a> </p>
 </div>
 </div>
-<div data-role="header" data-theme="b" data-position="fixed">
+<div data-role="header" data-theme="b" data-position="fixed" data-tap-toggle="false">
   <div data-role="navbar" data-theme="b">
     <div class="headertext">
       <span class="pagetitle">Movie io</span>
       </br>
-      <input type="checkbox" data-role="flipswitch" name="flip-checkbox-2" class="flip-checkbox-2" data-on-text="Dark" data-off-text="Light"/>
+      <button class="toggleBtn">Switch Theme</button>
       </div>
       <div id="leftIcon" style="margin-right:-20%;">
         <a href="#leftpanel2"><img src="jquery/images/icons-png/bullets-white.png"/></a>
@@ -875,7 +880,7 @@
     <div class="headertext">
       <span class="pagetitle">Movie io</span>
       </br>
-      <input type="checkbox" data-role="flipswitch" name="flip-checkbox-2" class="flip-checkbox-2" data-on-text="Dark" data-off-text="Light"/>
+      <button class="toggleBtn">Switch Theme</button>
       </div>
       <div id="leftIcon" style="margin-right:-20%;">
         <a href="#leftpanel2"><img src="jquery/images/icons-png/bullets-white.png"/></a>
@@ -916,7 +921,7 @@
     <div class="headertext">
       <span class="pagetitle">Movie io</span>
       </br>
-      <input type="checkbox" data-role="flipswitch" name="flip-checkbox-2" class="flip-checkbox-2" data-on-text="Dark" data-off-text="Light"/>
+      <button class="toggleBtn">Switch Theme</button>
       </div>
       <div id="leftIcon" style="margin-right:-20%;">
         <a href="#leftpanel2"><img src="jquery/images/icons-png/bullets-white.png"/></a>
@@ -975,7 +980,7 @@
     <div class="headertext">
       <span class="pagetitle">Movie io</span>
       </br>
-      <input type="checkbox" data-role="flipswitch" name="flip-checkbox-2" class="flip-checkbox-2" data-on-text="Dark" data-off-text="Light"/>
+      <button class="toggleBtn">Switch Theme</button>
       </div>
       <div id="leftIcon" style="margin-right:-20%;">
         <a href="#leftpanel2"><img src="jquery/images/icons-png/bullets-white.png"/></a>

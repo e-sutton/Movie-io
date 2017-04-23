@@ -14,6 +14,12 @@
   margin-right:50%
 }
 
+.toggleBtn{
+  border: 1px solid !important;
+  border-radius:0.5em !important;
+  text-decoration: none;
+}
+
 .pagetitle{
   font-size: 150%;
 }
