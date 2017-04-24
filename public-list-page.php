@@ -41,14 +41,10 @@ include("connection.php");
         url: "load_mylist.php",
         data: "id="+id,
         success: function(result){
-                //$("#message")[0].value = "Success";
-                alert("My List fetch success! " + result);
                 result = $.parseJSON(result);
-                console.log(result);
                 $.each(result, function (key, value) {
                   //$('#listviewpage').append(list);
-                  console.log("key: " + key + " value: " +value.review);
-                    $('#listviewpage').append("<li onclick='loadMovieDataFromList(\x22" +  value.id + "\x22)'><a href='http://localhost:8888/movie-io/index.php'>"
+                    $('#listviewpage').append("<li onclick='loadMovieDataFromList(\x22" +  value.id + "\x22)'><a href='https://movie-io.byethost7.com/index.php'>"
                     + "<h2>" + value.movie_title + "</h2>"
                     +"<p> Your Score: " + value.score + "</p>" + "<p>" + value.review +"</p>" + "</a></li>").listview('refresh');;
                 });
@@ -66,8 +62,8 @@ include("connection.php");
 
   <!--List Page-->
 
-  <div data-role="page" id="list-page" data-url="list-page" data-transition="slidedown">
-    <div data-role="panel" id="leftpanel2" data-position="left" data-display="reveal" data-theme="a"
+  <div data-role="page" id="public-list-page" data-url="public-list-page" data-transition="slidedown">
+    <div data-role="panel" id="leftpanel2" data-position="left" data-display="reveal" data-theme="b"
     class="ui-panel ui-panel-position-left ui-panel-display-reveal ui-body-a ui-panel-animate ui-panel-closed">
 
   <div class="ui-panel-inner">
@@ -77,17 +73,18 @@ include("connection.php");
   <p><a href="" onclick="logout()" data-rel="close" class="ui-btn ui-shadow ui-corner-all ui-btn-a ui-btn-inline">Log Out</a> </p>
   </div>
   </div>
-  <div data-role="header" data-theme="a" data-position="fixed">
-    <div data-role="navbar" data-theme="a">
-      <div id="headertext" style="text-align:center">
-        <span>Movie io</span>
+  <div data-role="header" data-theme="b" data-position="fixed">
+    <div data-role="navbar" data-theme="b">
+      <div class="headertext">
+        <span class="pagetitle">Movie io</span>
+        </br>
+        <button class="toggleBtn ui-btn-b">Switch Theme</button>
         </div>
-        <div id="leftIcon" style="margin-right:-20%;">
+        <div class="leftIcon">
           <a href="#leftpanel2"><img src="jquery/images/icons-png/bullets-white.png"/></a>
         </div>
   </div>
   </div>
-  </p>
       <div id="listviewDiv2" class="ui-panel-wrapper">
         <ul data-role="listview" data-inset="true" id="listviewpage">
         </ul>
@@ -96,7 +93,7 @@ include("connection.php");
   <div data-role="footer" data-id="search-page-footer" data-position="fixed" data-tap-toggle="false">
     <div data-role="navbar">
         <ul>
-            <li onclick=""><a href="#main-page">Box Office</a></li>
+            <li onclick=""><a href="#main-page">What's Hot</a></li>
             <li onclick=""><a href="#search-page">Search</a></li>
             <li onclick=""><a href="#list-page" class="ui-btn-active ui-state-persist">My List</a></li>
         </ul>

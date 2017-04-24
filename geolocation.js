@@ -2,7 +2,7 @@
 * geolocation.js *
 * Rev 1 *
 * 27/03/17 *
-* @reference: http://www.movable-type.co.uk/scripts/latlong.html
+* @reference (Haversine formula): http://www.movable-type.co.uk/scripts/latlong.html
 */
     //global variables
     var userLat;
@@ -16,29 +16,23 @@
           type: "GET",
           url: "get_location_data.php",
           success: function(result){
-                  //$("#message")[0].value = "Success";
-                  //alert("Geo location data fetch success! " + result);
                   result = $.parseJSON(result);
                   console.log(result);
                   //create user lat long object
                   var userLoc = new LatLon(sessionStorage.getItem("userLat"), sessionStorage.getItem("userLong"));
-                  //alert("lat: "+userLat + " lng: "+userLong);
 
                   $.each(result, function (key, value) {
                     var reviewLoc = new LatLon(Number(value.lat), Number(value.lng));
-                    //alert("saved lat: "+value.lat + " saved lng: "+value.lng);
                     //get distance
                     var dist = (((userLoc.distanceTo(reviewLoc)) /1000).toFixed(2));
-                    //alert("istance: "+dist)
                     if(dist <= 100){
                       $('#listviewpage2').append("<li onclick='loadMovieDataFromList(\x22" +  value.movie_id + "\x22)'><a href='#'>"
                       + "<h2>" + value.movie_title + "</h2>"
-                      +"<p> Your Score: " + value.score + "</p>" + "<p>" + value.review +"</p>" + "</a></li>").listview('refresh');;
+                      +"<p>Score: " + value.score + "</p>" + "<p>" + value.review +"</p>" + "</a></li>").listview('refresh');;
                     }
                   });
           },
           error: function(xhr, status, error){
-              //$("#message")[0].value = "Ajax error!"+result;
               alert("Geo location data fetch error " + xhr.responseText);
           }
       });

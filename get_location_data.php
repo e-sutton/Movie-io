@@ -19,11 +19,11 @@
 
     //start
 
-      //Insert
       $query = "
       SELECT * from movie_reviews
       WHERE lat is not null
       AND lng is not null
+      AND score >= 3
       ";
 
       try

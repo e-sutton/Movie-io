@@ -59,7 +59,7 @@
             "email" => $row['email'],
             "about_me" => $row['about_me'],
             "location" => $row['location'],
-            "avatar" => $row['avatar'],
+            "avatar" => str_replace(' ', '%20', $row['avatar']),
             "id" => $row['id']
           ));
         }

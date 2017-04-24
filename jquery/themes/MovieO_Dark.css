@@ -13,11 +13,17 @@
 /* Globals */
 /*---Custom CSS---*/
 
+.leftIcon{
+  position: fixed; top: 0; left: 0; border: 0;
+  min-width:100px;
+  min-height:100px;
+}
+
 .headertext{
   text-align:center;
-  float:right;
-  margin-right:50%
+  margin: 0 auto;
 }
+
 
 .pagetitle{
   font-size: 150%;

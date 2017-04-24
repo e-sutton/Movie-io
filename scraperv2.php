@@ -1,5 +1,8 @@
 
 <?php
+/*
+* @reference: DOM Parser http://simplehtmldom.sourceforge.net/
+*/
 include('simple_html_dom.php');
 //ini_set('display_errors', 1);
 
@@ -27,11 +30,15 @@ $actors = "";
 foreach ($act_page->find("span[itemprop=actors] a") as $key) {
   $actors = $actors . $key->plaintext . ', ';
 };
+//remove trailing comma
+$actors = rtrim($actors, ", ");
 $director = $act_page->find("span[itemprop=director] a", 0)->plaintext;
 $awards = "";
 foreach ($act_page->find("span[itemprop=awards]") as $key) {
   $awards = $awards . $key->plaintext . ', ';
 };
+//remove trailing comma
+$awards = rtrim($awards, ", ");
 $metascore = $act_page->find("div[class=metacriticScore]", 0)->plaintext;
 $poster = html_entity_decode(($act_page->find("div[class=poster] a", 0)->children(0)->src),ENT_COMPAT, 'UTF-8');
 

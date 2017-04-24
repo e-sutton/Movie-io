@@ -98,13 +98,10 @@
           dataType : 'json',
           success: function(result){
                   console.log(result);
-                  //$("#message")[0].value = "Success";
-                  //alert("Movie for List fetch success! " + result);
                   loadMovieData(result);
                   window.location.replace("index.php#movie-page");
           },
           error: function(xhr, status, error){
-              //$("#message")[0].value = "Ajax error!"+result;
               alert("Movie for list fetch error " + xhr.responseText);
           }
       });
@@ -124,7 +121,7 @@
                       var list = $('<ul></ul>');
                       $('#userReviews').append(list);
                       console.log("key: " + key + " value: " +value.review);
-                        list.append("<li onclick='goToPublicProfile(\x22" +  value.id + "\x22)'>" + "<div style='width:5%; height:5%;'><img src='" + value.avatar + "' style='max-width:100%; max-height:100%;'></div>"
+                        list.append("<li onclick='goToPublicProfile(\x22" +  value.id + "\x22)'>" + "<div style='width:20%; height:20%;'><img src='" + value.avatar + "' style='max-width:100%; max-height:100%; border-radius: 0.5em;'></div>"
                         + "<h3>" + value.username + ", " + value.location + " : " + value.date +"</h3>"
                                     +"<h4> Score: " + value.score + "</h4>" + "<p>" + value.review +"</p>" + "</li>");
                     });
@@ -151,7 +148,7 @@
                       var list = $('<ul></ul>');
                       $('#userReviews2').append(list);
                       console.log("key: " + key + " value: " +value.review);
-                        list.append("<li onclick='goToPublicProfile(\x22" +  value.id + "\x22)'>" + "<div style='width:5%; height:5%;'><img src='" + value.avatar + "' style='max-width:100%; max-height:100%;'></div>"
+                        list.append("<li onclick='goToPublicProfile(\x22" +  value.id + "\x22)'>" + "<div style='width:20%; height:20%;'><img src='" + value.avatar + "' style='max-width:100%; max-height:100%; border-radius: 0.5em;'></div>"
                         + "<h3>" + value.username + ", " + value.location + " : " + value.date + "</h3>"
                                     +"<h4> Score: " + value.score + "</h4>"+ "<p>" + value.review +"</p>" + "</li>");
                     });
@@ -197,7 +194,7 @@
                       var list = $('<ul></ul>');
                       $('#reviews').append(list);
                       console.log("key: " + key + " value: " +value.review);
-                        list.append("<li onclick='goToPublicProfile(\x22" +  value.id + "\x22)'>" + "<div style='width:5%; height:5%;'><img src='" + value.avatar + "' style='max-width:100%; max-height:100%;'></div>" + "<h3>" + value.username + ", " + value.location + " : "+ value.date +"</h3>" + "<h4> Score: " + value.score + "</h4>"
+                        list.append("<li onclick='goToPublicProfile(\x22" +  value.id + "\x22)'>" + "<div style='width:20%; height:20%;'><img src='" + value.avatar + "' style='max-width:100%; max-height:100%; border-radius: 0.5em;'></div>" + "<h3>" + value.username + ", " + value.location + " : "+ value.date +"</h3>" + "<h4> Score: " + value.score + "</h4>"
                                     + "<p>" + value.review +"</p>" + "</li>");
                     });
             },
@@ -243,10 +240,10 @@
       function saveMovie(){
         var title = $('#title').text().replace("&nbsp;","").trim();
         var release_Date = $('#releasedate').text().replace("Release Date:","").trim();
-        var synopsis = $('#synopsis').text().trim();
-        var starring = $('#starring').text().trim();
-        var awards = $('#awards').text().trim();
-        var metascore = $('#metascore').text().trim();
+        var synopsis = $('#synopsis').text().replace("Plot: ","").trim();
+        var starring = $('#starring').text().replace("Starring: ","").trim();
+        var awards = $('#awards').text().replace("Awards: ","").trim();
+        var metascore = $('#metascore').text().replace("Metascore: ","").trim();
         var poster = $('#posterimg').prop('src');
 
         var form_data = new FormData();
@@ -315,6 +312,10 @@
           checkLogin();
           loadGeoData();
           toggleStyles();
+          //set facebook Link
+          var user_id = $('#sessionuserid').text();
+          var link = "https://www.facebook.com/sharer/sharer.php?u=https://movie-io.byethost7.com/public-list-page.php?id="+ user_id +"&picture=&title=&caption=Movie-io&quote=Heres+a+list+of+my+favourite+movies+on+Movie-io!&description=";
+          $("#facebookLink").attr("href", link);
         });
 
 
@@ -390,7 +391,7 @@
       });
 
                     //cinemas page function
-                    $( document ).on( "pageshow", "#map-page", function() {
+                    $( document ).on( "pagecreate", "#map-page", function() {
                     checkLogin();
 
                     //geocoder
@@ -433,7 +434,6 @@
       //movie page function
       function loadMovieData(e){
         //check for &nsbp in title
-        //alert("title is " +e.movie_title);
         var title = "";
         if((e.Title.indexOf("&nsbp;")) != -1){
           title = e.Title.replace("&nbsp;"," ");
@@ -443,11 +443,12 @@
         }
         $('#title').html('<h2>' + title +'</h2>');
          $('#releasedate').html('Release Date: ' +e.Released);
-          $('#synopsis').html(e.Plot);
-          $('#starring').html(e.Actors);
-          $('#awards').html(e.Awards);
-          $('#metascore').html(e.Metascore);
+          $('#synopsis').html("Plot: " + e.Plot);
+          $('#starring').html("Starring: " + e.Actors);
+          $('#awards').html("Awards: " + e.Awards);
+          $('#metascore').html("Metascore: " + e.Metascore);
           $('#posterdiv').html('<img id="posterimg" src="' + e.Poster +'" style="max-width:100%; max-height:100%;"/>');
+          $('#ratingtext').html("Score:");
           //load star ratings
           $('#ratingdiv').raty({
             starOff: 'images/star-off.png',
@@ -473,7 +474,7 @@
                         success: function(result){
                                 //$("#message")[0].value = "Success";
                                 //alert("Success!");
-                                window.location = "index.html";
+                                window.location = "index.php";
 
                         },
                         error: function(xhr, status, error){
@@ -569,6 +570,13 @@
 
       //submit profile update Form
       function updateProfile2(){
+        var name = $('input[name=username]').val().trim();
+        var email = $('input[name=email]').val().trim();
+        var about_me = $('input[name=about_me]').val().trim();
+        var location = $('input[name=location]').val().trim();
+        var file = $('input[type="file"]').val().trim();
+
+      if (name || email || about_me || location || file){
       $("#formdata").submit(function(){
         var formData = new FormData($(this)[0]);
         $.ajax({
@@ -577,7 +585,7 @@
           data: formData,
           async: false,
           success: function(data){
-            //alert("Update ajax worked " + data);
+            alert("Update Succesful, please login again to see changes");
           },
           error: function(xhr, status, error){
               //$("#message")[0].value = "Ajax error!"+result;
@@ -589,6 +597,10 @@
         });
         return false;
       });
+    }
+    else{
+      alert("Please enter some information!");
+    }
     };
 
     function goToPublicProfile(id){
@@ -604,6 +616,7 @@
                   //set hidden div to save user id for insertReview2() use
                   $('#useridhidden').html(userid);
                   //activate rating stars
+                  $('#ratingtext2').html("Rate this users reviews:");
                   $('#ratingdiv2').raty({
                     starOff: 'images/star-off.png',
                     starOn: 'images/star-on.png',
@@ -676,7 +689,7 @@
         </div>
     </div>
 
-<!--Box Office/Main Page-->
+<!--What's Hot/Main Page-->
 
     <div data-role="page" id="main-page" data-url="main-page">
             <div data-role="panel" id="leftpanel1" data-position="left" data-display="reveal" data-theme="b"
@@ -708,7 +721,7 @@
     <div data-role="footer" data-id="main-page" data-position="fixed" data-tap-toggle="false">
     <div data-role="navbar">
         <ul>
-            <li onclick=""><a href="#main-page" class="ui-btn-active ui-state-persist">Box Office</a></li>
+            <li onclick=""><a href="#main-page" class="ui-btn-active ui-state-persist">What's Hot</a></li>
             <li onclick=""><a href="#search-page">Search</a></li>
             <li onclick=""><a href="#list-page">My List</a></li>
         </ul>
@@ -734,9 +747,9 @@
     <div class="headertext">
       <span class="pagetitle">Movie io</span>
     </br>
-    <button class="toggleBtn">Switch Theme</button>
+    <button class="toggleBtn ui-btn-b">Switch Theme</button>
       </div>
-      <div id="leftIcon" style="margin-right:-20%;">
+      <div class="leftIcon">
         <a href="#leftpanel2"><img src="jquery/images/icons-png/bullets-white.png"/></a>
       </div>
 </div>
@@ -751,7 +764,7 @@
   <div data-role="footer" data-id="search-page-footer" data-position="fixed" data-tap-toggle="false">
   <div data-role="navbar">
       <ul>
-          <li onclick=""><a href="#main-page">Box Office</a></li>
+          <li onclick=""><a href="#main-page">What's Hot</a></li>
           <li onclick=""><a href="#search-page" class="ui-btn-active ui-state-persist">Search</a></li>
           <li onclick=""><a href="#list-page">My List</a></li>
       </ul>
@@ -777,13 +790,13 @@
     <div class="headertext">
       <span class="pagetitle">Movie io</span>
       </br>
-      <button class="toggleBtn">Switch Theme</button>
+      <button class="toggleBtn ui-btn-b">Switch Theme</button>
       </div>
-      <div id="leftIcon" style="margin-right:-20%; float:left; width:50px; height:50px;">
+      <div class="leftIcon">
         <a href="#leftpanel2"><img src="jquery/images/icons-png/bullets-white.png"/></a>
       </div>
       <div id="facebookicon">
-        <a href="https://www.facebook.com/sharer/sharer.php?u=https://movie-io.byethost7.com/index.php#public-list-page?id=30&picture=&title=&caption=Movie-io&quote=Heres+a+list+of+my+favourite+movies+on+Movie-io!&description="><img class="facebookimg" src="images/facebook.jpeg"/></a>
+        <a id="facebookLink"><img class="facebookimg" src="images/facebook.jpeg"/></a>
       </div>
 </div>
 </div>
@@ -795,7 +808,7 @@
 <div data-role="footer" data-id="search-page-footer" data-position="fixed" data-tap-toggle="false">
   <div data-role="navbar">
       <ul>
-          <li onclick=""><a href="#main-page">Box Office</a></li>
+          <li onclick=""><a href="#main-page">What's Hot</a></li>
           <li onclick=""><a href="#search-page">Search</a></li>
           <li onclick=""><a href="#list-page" class="ui-btn-active ui-state-persist">My List</a></li>
       </ul>
@@ -821,9 +834,9 @@
     <div class="headertext">
       <span class="pagetitle">Movie io</span>
       </br>
-      <button class="toggleBtn">Switch Theme</button>
+      <button class="toggleBtn ui-btn-b">Switch Theme</button>
       </div>
-      <div id="leftIcon" style="margin-right:-20%;">
+      <div class="leftIcon">
         <a href="#leftpanel2"><img src="jquery/images/icons-png/bullets-white.png"/></a>
       </div>
 </div>
@@ -854,7 +867,7 @@
   <div data-role="footer" data-id="search-page-footer" data-position="fixed" data-tap-toggle="false">
   <div data-role="navbar">
       <ul>
-          <li onclick=""><a href="#main-page">Box Office</a></li>
+          <li onclick=""><a href="#main-page">What's Hot</a></li>
           <li onclick=""><a href="#search-page">Search</a></li>
           <li onclick=""><a href="#list-page">My List</a></li>
       </ul>
@@ -880,9 +893,9 @@
     <div class="headertext">
       <span class="pagetitle">Movie io</span>
       </br>
-      <button class="toggleBtn">Switch Theme</button>
+      <button class="toggleBtn ui-btn-b">Switch Theme</button>
       </div>
-      <div id="leftIcon" style="margin-right:-20%;">
+      <div class="leftIcon">
         <a href="#leftpanel2"><img src="jquery/images/icons-png/bullets-white.png"/></a>
       </div>
 </div>
@@ -896,7 +909,7 @@
        <div data-role="footer" data-id="search-page-footer" data-position="fixed" data-tap-toggle="false">
   <div data-role="navbar">
       <ul>
-          <li onclick=""><a href="#main-page">Box Office</a></li>
+          <li onclick=""><a href="#main-page">What's Hot</a></li>
           <li onclick=""><a href="#search-page">Search</a></li>
           <li onclick=""><a href="#list-page">My List</a></li>
       </ul>
@@ -916,14 +929,14 @@
 <p><a href="" onclick="logout()" data-rel="close" class="ui-btn ui-shadow ui-corner-all ui-btn-a ui-btn-inline">Log Out</a> </p>
 </div>
 </div>
-<div data-role="header" data-theme="b" data-position="fixed">
+<div data-role="header" data-theme="b" data-position="fixed" data-tap-toggle="false">
   <div data-role="navbar" data-theme="b">
     <div class="headertext">
       <span class="pagetitle">Movie io</span>
       </br>
-      <button class="toggleBtn">Switch Theme</button>
+      <button class="toggleBtn ui-btn-b">Switch Theme</button>
       </div>
-      <div id="leftIcon" style="margin-right:-20%;">
+      <div class="leftIcon">
         <a href="#leftpanel2"><img src="jquery/images/icons-png/bullets-white.png"/></a>
       </div>
 </div>
@@ -955,7 +968,7 @@
 <div data-role="footer" data-id="search-page-footer" data-position="fixed" data-tap-toggle="false">
   <div data-role="navbar">
       <ul>
-          <li onclick=""><a href="#main-page">Box Office</a></li>
+          <li onclick=""><a href="#main-page">What's Hot</a></li>
           <li onclick=""><a href="#search-page">Search</a></li>
           <li onclick=""><a href="#list-page">My List</a></li>
       </ul>
@@ -980,9 +993,9 @@
     <div class="headertext">
       <span class="pagetitle">Movie io</span>
       </br>
-      <button class="toggleBtn">Switch Theme</button>
+      <button class="toggleBtn ui-btn-b">Switch Theme</button>
       </div>
-      <div id="leftIcon" style="margin-right:-20%;">
+      <div class="leftIcon">
         <a href="#leftpanel2"><img src="jquery/images/icons-png/bullets-white.png"/></a>
       </div>
 </div>
@@ -993,6 +1006,7 @@
     <div id="emaildiv2" class="mainDivs">Email: <span id="emailspan2"><?php echo $_SESSION['publicuseremail'];?></span></div>
     <div id="aboutmediv2" class="synopsis">About Me: <span id="aboutmespan2"><?php echo $_SESSION['publicuserabout'];?></span></div>
     <div id="locationdiv2" class="mainDivs">My Location: <span id="locationspan2"><?php echo $_SESSION['publicuserlocation'];?></span></div>
+    <div id="ratingtext2" class="mainDivs"></div>
     <p>
       <div id="ratingdiv2" data-role="none" class="mainDivs">
       </div>
@@ -1004,7 +1018,7 @@
       </div>
     </p>
 
-    <div class="">Comments:
+    <div class="">
 
         <div id="userReviews2" class="userReviews">
         </div>
@@ -1014,7 +1028,7 @@
 <div data-role="footer" data-id="search-page-footer" data-position="fixed" data-tap-toggle="false">
   <div data-role="navbar">
       <ul>
-          <li onclick=""><a href="#main-page">Box Office</a></li>
+          <li onclick=""><a href="#main-page">What's Hot</a></li>
           <li onclick=""><a href="#search-page">Search</a></li>
           <li onclick=""><a href="#list-page">My List</a></li>
       </ul>

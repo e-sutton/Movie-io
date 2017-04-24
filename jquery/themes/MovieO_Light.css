@@ -10,8 +10,7 @@
 
 .headertext{
   text-align:center;
-  float:right;
-  margin-right:50%
+  margin: 0 auto;
 }
 
 .toggleBtn{
