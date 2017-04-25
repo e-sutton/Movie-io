@@ -28,7 +28,8 @@
                     if(dist <= 100){
                       $('#listviewpage2').append("<li onclick='loadMovieDataFromList(\x22" +  value.movie_id + "\x22)'><a href='#'>"
                       + "<h2>" + value.movie_title + "</h2>"
-                      +"<p>Score: " + value.score + "</p>" + "<p>" + value.review +"</p>" + "</a></li>").listview('refresh');;
+                      +"<p>Score: " + value.score + "</p>" + "<p>" + value.review +"</p>"
+                      +"<p style='font-style: italic;'>"+ value.username + " - " +  value.date +"</p>" + "</a></li>").listview('refresh');;
                     }
                   });
           },
@@ -63,6 +64,7 @@
     LatLon.prototype.distanceTo = function(point, radius) {
         if (!(point instanceof LatLon)) throw new TypeError('point is not LatLon object');
         radius = (radius === undefined) ? 6371e3 : Number(radius);
+        console.log("Point: "+ point + " radius: " +radius);
 
         var R = radius;
         var v1 = toRad(this.lat),  a1 = toRad(this.lon);

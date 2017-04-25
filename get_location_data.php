@@ -20,10 +20,13 @@
     //start
 
       $query = "
-      SELECT * from movie_reviews
-      WHERE lat is not null
-      AND lng is not null
-      AND score >= 3
+      SELECT a.movie_id, a.movie_title, a.score, a.review, a.date, a.lat, a.lng, b.username
+      from movie_reviews a
+      JOIN login b on (a.user_id = b.id)
+      WHERE a.lat is not null
+      AND a.lng is not null
+      AND a.score >= 3
+      ORDER BY a.date desc
       ";
 
       try

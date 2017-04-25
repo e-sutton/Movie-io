@@ -31,7 +31,7 @@
         SELECT a.movie_title, a.release_date, a.review, a.score, b.id
         FROM movie_reviews a join movies b on (a.movie_title = b.title)
         WHERE user_id = :id
-        AND score >= 3
+        ORDER BY a.score desc
         ";
 
         try
@@ -69,7 +69,7 @@
       SELECT a.movie_title, a.release_date, a.review, a.score, b.id
       FROM movie_reviews a join movies b on (a.movie_title = b.title)
       WHERE user_id = :id
-      AND score >= 3
+      ORDER BY a.score desc
       ";
 
       try
