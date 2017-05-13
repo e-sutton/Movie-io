@@ -1,4 +1,7 @@
 <?php
+/* OLD SCRAPER File
+*/
+
 include('simple_html_dom.php');
 ini_set('display_errors', 1);
 

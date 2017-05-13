@@ -1,8 +1,9 @@
 <?php
 /*
-* login.php *
-* Rev 1 *
-* 08/03/17 *
+* load_reviews.php
+* Rev 1
+* 08/03/17
+* @author: Eoin Sutton
 *
 */
     // get connection to DB

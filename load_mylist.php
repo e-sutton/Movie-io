@@ -1,9 +1,9 @@
 <?php
 /*
-* load_user_reviews.php *
-* Rev 1 *
-* 08/03/17 *
-*
+* load_mylist.php
+* Rev 1
+* 08/03/17
+* @author: Eoin Sutton
 */
     // get connection to DB
     include("connection.php");

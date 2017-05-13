@@ -3,7 +3,7 @@
 * login.php *
 * Rev 1 *
 * 08/02/17 *
-*
+* @author: Eoin Sutton
 * @reference http://forums.devshed.com/php-faqs-stickies-167/program-basic-secure-login-system-using-php-mysql-891201.html *
 */
     // get connection to DB
@@ -41,19 +41,13 @@
             echo("Failed to run query: " . $ex->getMessage());
         }
 
-        // This variable tells us whether the user has successfully logged in or not.
-        // We initialize it to false, assuming they have not.
-        // If we determine that they have entered the right details, then we switch it to true.
         $login_ok = false;
 
-        // Retrieve the user data from the database.  If $row is false, then the username
-        // they entered is not registered.
+        // Get data from DB, if row false, no data returned
         $row = $stmt->fetch();
         if($row)
         {
-            // Using the password submitted by the user and the salt stored in the database,
-            // we now check to see whether the passwords match by hashing the submitted password
-            // and comparing it to the hashed version already stored in the database.
+            //check password matches
             $check_password = hash('sha256', $_POST['password'] . $row['salt']);
             for($round = 0; $round < 65536; $round++)
             {
@@ -74,7 +68,7 @@
         {
 
             // This stores the user's data into the session at the index 'user'.
-            //but first remove sensitive data from it
+            // but first remove sensitive data from it
             unset($row['salt']);
             unset($row['password']);
             $_SESSION['user'] = $row;

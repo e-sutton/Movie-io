@@ -1,8 +1,9 @@
 <?php
 /*
-* load_user_reviews.php *
-* Rev 1 *
-* 08/03/17 *
+* load_public_user_reviews.php
+* Rev 1
+* 20/03/17
+* @author: Eoin Sutton
 *
 */
     // get connection to DB

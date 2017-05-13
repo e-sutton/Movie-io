@@ -1,9 +1,9 @@
 <?php
 /*
-* login.php *
-* Rev 1 *
-* 08/03/17 *
-*
+* load_movies_from_list.php
+* Rev 1
+* 08/03/17
+* @ author: Eoin Sutton
 */
     // get connection to DB
     include("connection.php");

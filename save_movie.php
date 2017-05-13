@@ -1,9 +1,9 @@
 <?php
 /*
-* login.php *
-* Rev 1 *
-* 08/03/17 *
-*
+* save_moie.php
+* Rev 1
+* 20/04/17
+* @author: Eoin Sutton
 */
     // get connection to DB
     include("connection.php");

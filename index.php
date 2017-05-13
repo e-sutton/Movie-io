@@ -1,10 +1,10 @@
 <?php
 /*
-* index.php *
-* Rev 1 *
-* 26/02/2017 *
+* index.php
+* Rev 10
+* 20/04/2017
 *
-* @author Eoin Sutton *
+* @author Eoin Sutton
 * @reference (star rating): https://github.com/wbotelhos/raty
 */
 
@@ -61,15 +61,20 @@
                 <label for="txt-password">Password</label>
                 <input type="password" name="txt-password" id="password" value="">
                 <br/>
-                <button id="submit" onclick="login()">Login</button>
+                <button onclick="login()">Login</button>
                 <br/>
                 <a href="#registerpage" data-transition="slidedown" id="registerlink">Register</a>
+                <br/>
+                <a href="#getpasswordpage" data-transition="slidedown" id="passwordlink">Forgot Your Password?</a>
             </div>
         </div>
     </div>
 
     <div data-role="page" id="registerpage">
       <div data-role="header" data-theme="b">
+        <div style="text-align: center">
+          <span id="mainTitle">Welcome to Movie iO!</span>
+        </div>
         </div>
          <div role="main" class="ui-content">
             <div id="signuparea" style="text-align:center">
@@ -82,6 +87,25 @@
                 <input type="password" name="txt-password" id="regpassword" value="">
                 <br/>
                 <button id="submit" onclick="register()"> Submit</button>
+                <br/>
+                <a href="#loginpage" data-transition="slideup" id="registerlink">Login</a>
+            </div>
+        </div>
+    </div>
+
+    <div data-role="page" id="getpasswordpage">
+        <div data-role="header" data-theme="b">
+          <div style="text-align: center">
+            <span id="mainTitle">Welcome to Movie iO!</span>
+          </div>
+        </div>
+        <div role="main" class="ui-content">
+            <div id="forgotpassarea" style="text-align:center">
+                <h3 id="Ftitle">To reset your password, please enter your username</h3>
+                <label for="txt-first-name">Username</label>
+                <input type="text" name="txt-first-nameF" id="usernameF" value="">
+                <br/>
+                <button id="submit" onclick="getPassword()">Get Password</button>
                 <br/>
                 <a href="#loginpage" data-transition="slideup" id="registerlink">Login</a>
             </div>
@@ -130,7 +154,7 @@
 
 <!--Search Pagae-->
 
-<div data-role="page" id="search-page" data-url="search-page" data-transition="slidedown">
+<div data-role="page" id="search-page" data-url="search-page">
   <div data-role="panel" id="leftpanel2" data-position="left" data-display="reveal" data-theme="b"
   class="ui-panel ui-panel-position-left ui-panel-display-reveal ui-body-a ui-panel-animate ui-panel-closed">
 
@@ -173,8 +197,8 @@
 
 <!--List Page-->
 
-<div data-role="page" id="list-page" data-url="list-page" data-transition="slidedown">
-  <div data-role="panel" id="leftpanel2" data-position="left" data-display="reveal" data-theme="b"
+<div data-role="page" id="list-page" data-url="list-page">
+  <div data-role="panel" id="leftpanel3" data-position="left" data-display="reveal" data-theme="b"
   class="ui-panel ui-panel-position-left ui-panel-display-reveal ui-body-a ui-panel-animate ui-panel-closed">
 
 <div class="ui-panel-inner">
@@ -192,7 +216,7 @@
       <button class="toggleBtn ui-btn-b">Switch Theme</button>
       </div>
       <div class="leftIcon">
-        <a href="#leftpanel2"><img src="jquery/images/icons-png/bullets-white.png"/></a>
+        <a href="#leftpanel3"><img src="jquery/images/icons-png/bullets-white.png"/></a>
       </div>
       <div id="facebookicon">
         <a id="facebookLink"><img class="facebookimg" src="images/facebook.jpeg"/></a>
@@ -217,8 +241,8 @@
 
 
 <!--View Movie page -->
-<div data-role="page" id="movie-page" data-url="movie-page" data-transition="slidedown">
-  <div data-role="panel" id="leftpanel2" data-position="left" data-display="reveal" data-theme="b"
+<div data-role="page" id="movie-page" data-url="movie-page">
+  <div data-role="panel" id="leftpanel4" data-position="left" data-display="reveal" data-theme="b"
   class="ui-panel ui-panel-position-left ui-panel-display-reveal ui-body-a ui-panel-animate ui-panel-closed">
 
 <div class="ui-panel-inner">
@@ -236,7 +260,7 @@
       <button class="toggleBtn ui-btn-b">Switch Theme</button>
       </div>
       <div class="leftIcon">
-        <a href="#leftpanel2"><img src="jquery/images/icons-png/bullets-white.png"/></a>
+        <a href="#leftpanel4"><img src="jquery/images/icons-png/bullets-white.png"/></a>
       </div>
 </div>
 </div>
@@ -276,8 +300,8 @@
 
 <!--Cinema page -->
 
-    <div data-role="page" id="map-page" data-url="map-page">
-  <div data-role="panel" id="leftpanel2" data-position="left" data-display="reveal" data-theme="b"
+  <div data-role="page" id="map-page" data-url="map-page">
+  <div data-role="panel" id="leftpanel5" data-position="left" data-display="reveal" data-theme="b"
   class="ui-panel ui-panel-position-left ui-panel-display-reveal ui-body-a ui-panel-animate ui-panel-closed">
 
 <div class="ui-panel-inner">
@@ -295,7 +319,7 @@
       <button class="toggleBtn ui-btn-b">Switch Theme</button>
       </div>
       <div class="leftIcon">
-        <a href="#leftpanel2"><img src="jquery/images/icons-png/bullets-white.png"/></a>
+        <a href="#leftpanel5"><img src="jquery/images/icons-png/bullets-white.png"/></a>
       </div>
 </div>
 </div>
@@ -317,8 +341,8 @@
     </div>
 
 <!--profile page -->
-<div data-role="page" id="profile-page" data-url="profile-page" data-transition="slidedown">
-  <div data-role="panel" id="leftpanel2" data-position="left" data-display="reveal" data-theme="b"
+<div data-role="page" id="profile-page" data-url="profile-page">
+  <div data-role="panel" id="leftpanel6" data-position="left" data-display="reveal" data-theme="b"
   class="ui-panel ui-panel-position-left ui-panel-display-reveal ui-body-a ui-panel-animate ui-panel-closed">
 
 <div class="ui-panel-inner">
@@ -336,7 +360,7 @@
       <button class="toggleBtn ui-btn-b">Switch Theme</button>
       </div>
       <div class="leftIcon">
-        <a href="#leftpanel2"><img src="jquery/images/icons-png/bullets-white.png"/></a>
+        <a href="#leftpanel6"><img src="jquery/images/icons-png/bullets-white.png"/></a>
       </div>
 </div>
 </div>
@@ -376,8 +400,8 @@
 </div>
 
 <!--PUBLIC profile page -->
-<div data-role="page" id="public-profile-page" data-url="public-profile-page" data-transition="slidedown">
-  <div data-role="panel" id="leftpanel2" data-position="left" data-display="reveal" data-theme="b"
+<div data-role="page" id="public-profile-page" data-url="public-profile-page">
+  <div data-role="panel" id="leftpanel7" data-position="left" data-display="reveal" data-theme="b"
   class="ui-panel ui-panel-position-left ui-panel-display-reveal ui-body-a ui-panel-animate ui-panel-closed">
 
 <div class="ui-panel-inner">
@@ -387,7 +411,7 @@
 <p><a href="" onclick="logout()" data-rel="close" class="ui-btn ui-shadow ui-corner-all ui-btn-a ui-btn-inline">Log Out</a> </p>
 </div>
 </div>
-<div data-role="header" data-theme="b" data-position="fixed">
+<div data-role="header" data-theme="b" data-position="fixed" data-tap-toggle="false">
   <div data-role="navbar" data-theme="b">
     <div class="headertext">
       <span class="pagetitle">Movie io</span>
@@ -395,7 +419,7 @@
       <button class="toggleBtn ui-btn-b">Switch Theme</button>
       </div>
       <div class="leftIcon">
-        <a href="#leftpanel2"><img src="jquery/images/icons-png/bullets-white.png"/></a>
+        <a href="#leftpanel7"><img src="jquery/images/icons-png/bullets-white.png"/></a>
       </div>
 </div>
 </div>
@@ -424,7 +448,7 @@
         <div id="useridhidden" style="display:none;"></div>
    </div>
   </div>
-<div data-role="footer" data-id="search-page-footer" data-position="fixed" data-tap-toggle="false">
+<div data-role="footer" data-id="search-page-footer" data-position="fixed">
   <div data-role="navbar">
       <ul>
           <li onclick=""><a href="#main-page">What's Hot</a></li>

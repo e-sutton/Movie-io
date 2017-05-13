@@ -1,3 +1,9 @@
+<!--
+* Qunit-Test-Home.html
+* Rev 1
+* 20/04/17
+* @author: Eoin Sutton
+-->
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,11 +15,8 @@
     <script type="text/javascript" src="myProject.js"></script>-->
     <!-- Your tests file goes here-->
     <script src="jquery/jquery-2.1.4.min.js"></script>
-    <script src="jquery/jquery.mobile-1.4.5.min.js"></script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBE3e4Xerq2saFeitH6Dooaqy_zS1fSM0"></script>
-    <script src="jquery/jquery.raty.js"></script>
-    <script src="geolocation.js"></script>
-    <script src="main.js"></script>
+
+
 
     <!-- Stylesheets -->
     <link rel="stylesheet" href="jquery/jquery.raty.css"/>
@@ -57,6 +60,29 @@
         return d;
     };
 
+    function publiclistpage(id){
+      alert("fired");
+    $.ajax({
+        type: "POST",
+        url: "load_mylist.php",
+        data: "id="+id,
+        async: false,
+        success: function(result){
+                result = $.parseJSON(result);
+                alert(result);
+                $.each(result, function (key, value) {
+                  //$('#listviewpage').append(list);
+                    $('#listviewpage').append("<li onclick='loadMovieDataFromList(\x22" +  value.id + "\x22)'><a href='https://movie-io.byethost7.com/index.php'>"
+                    + "<h2>" + value.movie_title + "</h2>"
+                    +"<p> Your Score: " + value.score + "</p>" + "<p>" + value.review +"</p>" + "</a></li>").listview('refresh');
+                });
+        },
+        error: function(xhr, status, error){
+            //$("#message")[0].value = "Ajax error!"+result;
+            alert("User review fetch error " + xhr.responseText);
+        }
+    });
+}
 
 
     QUnit.test('gps test', function(assert) {
@@ -65,7 +91,7 @@
     });
 
     QUnit.test('other functions', function(assert) {
-      assert.ok(loadPublicUserReviews(), "load public user reviews works");
+      assert.ok(publiclistpage(), "load public list page works");
     });
 
     </script>

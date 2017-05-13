@@ -32,6 +32,21 @@ include("connection.php");
   <link rel="stylesheet" href="jquery/jquery.mobile.structure-1.4.5.css" />
   <meta name="viewport" content="width=device-width, initial-scale=1"> <!--sizing -->
   <script>
+
+  //toggle stylesheets
+  function toggleStyles(){
+  $('.toggleBtn').on('click', function() {
+    var href = $('#light').attr('href');
+    if(href == 'jquery/themes/MovieO_Light.css'){
+      $('#light').attr('href','jquery/themes/MovieO_Dark.css');
+    }
+    else{
+      $('#light').attr('href','jquery/themes/MovieO_Light.css');
+    }
+  });
+  }
+
+
   var id = "<?php echo $_GET['id'];?>";
   //load MyList page movies
   //on page load
@@ -39,14 +54,14 @@ include("connection.php");
     $.ajax({
         type: "POST",
         url: "load_mylist.php",
-        data: "id="+id,
+        data: "id="+30,
         success: function(result){
                 result = $.parseJSON(result);
                 $.each(result, function (key, value) {
                   //$('#listviewpage').append(list);
                     $('#listviewpage').append("<li onclick='loadMovieDataFromList(\x22" +  value.id + "\x22)'><a href='https://movie-io.byethost7.com/index.php'>"
                     + "<h2>" + value.movie_title + "</h2>"
-                    +"<p> Your Score: " + value.score + "</p>" + "<p>" + value.review +"</p>" + "</a></li>").listview('refresh');;
+                    +"<p> Your Score: " + value.score + "</p>" + "<p>" + value.review +"</p>" + "</a></li>").listview('refresh');
                 });
         },
         error: function(xhr, status, error){

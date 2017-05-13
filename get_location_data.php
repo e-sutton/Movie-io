@@ -1,9 +1,9 @@
 <?php
 /*
-* get_location_data.php *
-* Rev 1 *
-* 27/03/17 *
-*
+* get_location_data.php
+* Rev 1
+* 27/03/17
+* @ author: Eoin Sutton
 */
     // get connection to DB
     include("connection.php");

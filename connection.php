@@ -1,12 +1,11 @@
 <?php
 /*
-* common.php *
-* Rev 1 *
-* 08/02/17 *
-*
+* connection.php 
+* Rev 1
+* 08/02/17
+* @author: Eoin Sutton
 * @reference http://forums.devshed.com/php-faqs-stickies-167/program-basic-secure-login-system-using-php-mysql-891201.html *
 */
-//common.php accesses the mySQL database
 //variables
 $username = "root";
 $password = "root";
@@ -19,12 +18,11 @@ try{
 } catch (PDOException $ex) {
     die("Failed to connect to the database: " . $ex->getMessage());
 }
-//configure PDO to throw exception if error encountered
+//throw exceptions for errors
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-//return db rows using associative array - will have string indexes where string value
-//represents the column name
+//return db rows using associative array
 $db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-//initialise session which stores information about visitors. Info is stored on server side.
+//initialise session
 session_start();
 ?>

@@ -1,9 +1,9 @@
 <?php
 /*
-* login.php *
-* Rev 1 *
-* 08/02/17 *
-*
+* profile.php
+* Rev 1
+* 08/03/17
+* @author: Eoin Sutton
 */
     // get connection to DB
     include("connection.php");
@@ -18,23 +18,6 @@
     if(!empty($_POST))
     {
 
-    // If the user entered a new password, we need to hash it and generate a fresh salt
-    /*if(!empty($_POST['password']))
-    {
-        $salt = dechex(mt_rand(0, 2147483647)) . dechex(mt_rand(0, 2147483647));
-        $password = hash('sha256', $_POST['password'] . $salt);
-        for($round = 0; $round < 65536; $round++)
-        {
-            $password = hash('sha256', $password . $salt);
-        }
-    }
-    else
-    {
-        // If the user did not enter a new password we will not update their old one.
-        $password = null;
-        $salt = null;
-    }*/
-
     // Initial query parameter values
     $query_params = array();
 
@@ -42,15 +25,6 @@
   {
     $query_params[':email'] = $_POST['email'];
   }
-
-
-    // If the user is changing their password, then we need parameter values
-    // for the new password hash and salt too.
-    /*if($password !== null)
-    {
-        $query_params[':password'] = $password;
-        $query_params[':salt'] = $salt;
-    }*/
 
     $query_params[':sessionuser'] = $_SESSION['user']['username'];
 
@@ -75,15 +49,6 @@
         SET
         col1 = ''
     ";
-
-    // if user changing password, include the below
-    /*if($password !== null)
-    {
-        $query .= "
-            , password = :password
-            , salt = :salt
-        ";
-    }*/
 
     if(!empty($_POST['username']))
   {

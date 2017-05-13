@@ -2,6 +2,7 @@
 * geolocation.js *
 * Rev 1 *
 * 27/03/17 *
+* @ author: Eoin Sutton
 * @reference (Haversine formula): http://www.movable-type.co.uk/scripts/latlong.html
 */
     //global variables

@@ -1,9 +1,9 @@
 <?php
 /*
-* review_movie.php *
-* Rev 1 *
-* 08/03/17 *
-*
+* review_movie.php
+* Rev 1
+* 20/04/17
+* @author: Eoin Sutton
 */
     // get connection to DB
     include("connection.php");

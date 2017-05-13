@@ -1,3 +1,29 @@
+/*
+* main.js
+* Rev 40
+* 20/04/17
+* @author: Eoin Sutton
+*/
+
+/*********************************************************/
+//get password if forgottten
+function getPassword(){
+  var username = $("#usernameF")[0].value;
+  $.ajax({
+      type: "POST",
+      url: "get_password.php",
+      data: "&username="+username,
+      success: function(result){
+              alert("Thank you! If your username exists in our database, a new password will be emailed to you!");
+              window.location.replace("index.php");
+      },
+      error: function(xhr, status, error){
+          alert("Password fetch error " + xhr.responseText);
+      }
+  });
+}
+
+/*********************************************************/
 //toggle stylesheets
 function toggleStyles(){
 $('.toggleBtn').on('click', function() {
@@ -10,10 +36,13 @@ $('.toggleBtn').on('click', function() {
   }
 });
 }
+/***********************************************************
+ LIST PAGE */
 
 //load MyList page movies
 //on page load
-$( document ).on( "pagecreate", "#list-page", function() {
+$( document ).on( "pagebeforeshow", "#list-page", function() {
+  $('#listviewpage').empty();
   $.ajax({
       type: "GET",
       url: "load_mylist.php",
@@ -21,10 +50,10 @@ $( document ).on( "pagecreate", "#list-page", function() {
               //$("#message")[0].value = "Success";
               //alert("My List fetch success! " + result);
               result = $.parseJSON(result);
-              console.log(result);
+              //console.log(result);
               $.each(result, function (key, value) {
                 //$('#listviewpage').append(list);
-                console.log("key: " + key + " value: " +value.review);
+                //console.log("key: " + key + " value: " +value.review);
                   $('#listviewpage').append("<li onclick='loadMovieDataFromList(\x22" +  value.id + "\x22)'><a href='#'>"
                   + "<h2>" + value.movie_title + "</h2>"
                   +"<p> Your Score: " + value.score + "</p>" + "<p>" + value.review +"</p>" + "</a></li>").listview('refresh');
@@ -35,10 +64,10 @@ $( document ).on( "pagecreate", "#list-page", function() {
           alert("User review fetch error " + xhr.responseText);
       }
   });
-  //toggleBtn();
-
 });
 
+/***********************************************************/
+//On Click of movie title
 function loadMovieDataFromList(id){
 var id = id;
 $.ajax({
@@ -56,6 +85,7 @@ $.ajax({
     }
 });
 }
+/************************************************************/
 
 //load user reviews
 function loadUserReviews(){
@@ -109,6 +139,7 @@ function loadPublicUserReviews(){
       }
   });
 }
+/*************************************************************/
 
 //on page load of profile
 $( document ).on( "pagecreate", "#profile-page", function() {
@@ -120,6 +151,7 @@ $( document ).on( "pagecreate", "#profile-page", function() {
 $( document ).on( "pageshow", "#public-profile-page", function() {
   loadPublicUserReviews();
 });
+/*************************************************************/
 
 //find movie reviews
 function loadReviews(e, title){
@@ -226,6 +258,7 @@ function saveMovie(){
   });
 
 }
+/*************************************************************/
 
 //insert user review
 function insertReview2(){
@@ -233,7 +266,8 @@ function insertReview2(){
   var score = $('#ratingdiv2').raty('score');
   var created_by_user_id = $('#sessionuserid').text();
   var user_id = $('#useridhidden').text();
-  //alert("review text: " + review + ", user id: "+user_id + ", score " + score);
+
+  if(review || score){
   $.ajax({
       type: "POST",
       url: "review_user.php",
@@ -248,7 +282,12 @@ function insertReview2(){
           alert("User Review JS error!" + xhr.responseText);
       }
   });
+}
+else{
+  alert("Please enter a rating or review");
+}
 };
+/*************************************************************/
 
 //get gps co-ordinates when page first loadSearchData
 $( document ).on( "pageshow", function() {
@@ -256,6 +295,7 @@ $( document ).on( "pageshow", function() {
     getPosition();
   };
 });
+/*************************************************************/
 
 //check user logged in on load of main-page data role, also grab gps position
 $( document ).on( "pagecreate", "#main-page", function() {
@@ -286,6 +326,7 @@ $( document ).on( "pagecreate", "#main-page", function() {
         }
     });
   };
+/*************************************************************/
 
 //global variables
 var movieTitle = "";
@@ -305,9 +346,9 @@ var movieTitle = "";
         });
       };
 
+/*************************************************************/
 
-
-//search page function
+//search page function, WEB SCRAPER
 $( document ).on( "pagecreate", "#search-page", function() {
 //alert("pageinit function loaded");
 checkLogin();
@@ -329,7 +370,7 @@ $('#autocomplete-input').keypress(function (e) {
           },
           error: function(xhr, status, error){
               //$("#message")[0].value = "Ajax error!"+result;
-              alert("Scraper JS error" + xhr.responseText);
+              alert("Error! Movie not found! Please check the name or try including the year!" + xhr.responseText);
           }
 
 
@@ -339,37 +380,38 @@ $('#autocomplete-input').keypress(function (e) {
 
   });
 });
+/*************************************************************/
+  //cinemas page function
+  $( document ).on( "pagecreate", "#map-page", function() {
+  checkLogin();
 
-              //cinemas page function
-              $( document ).on( "pagecreate", "#map-page", function() {
-              checkLogin();
+  //geocoder
+  var geocoder = new google.maps.Geocoder;
 
-              //geocoder
-              var geocoder = new google.maps.Geocoder;
+    var lat1 = sessionStorage.getItem("userLat");
+    var lng1 = sessionStorage.getItem("userLong");
+    var latLong = lat1 + "," +lng1;
 
-                var lat1 = sessionStorage.getItem("userLat");
-                var lng1 = sessionStorage.getItem("userLong");
-                var latLong = lat1 + "," +lng1;
+    var input = latLong;
+    var latlngStr = input.split(',', 2);
+    var latlng = {lat: parseFloat(latlngStr[0]), lng: parseFloat(latlngStr[1])};
+    //use geocoder to find current place name and use that to grab results of map search query
+    geocoder.geocode({'location': latlng}, function(results, status) {
+      if (status == "OK"){
+        if (results[0]){
+          var currentLoc = results[0].address_components[5].long_name;
+          //alert("location name = " + results[0].address_components[5].long_name);
+          //load map
+          $('#map-canvas').html('<iframe width="100%" height="70%" frameborder="0" style="border:0"' +
+          'src="https://www.google.com/maps/embed/v1/search?key=AIzaSyCoSolGmCfXef_f3hK7qtxWdUFGwCfFQqE&center='+ latLong
+          +'&zoom=11&q=cinemas+near+'+ currentLoc +'" allowfullscreen></iframe>');
 
-                var input = latLong;
-                var latlngStr = input.split(',', 2);
-                var latlng = {lat: parseFloat(latlngStr[0]), lng: parseFloat(latlngStr[1])};
-                //use geocoder to find current place name and use that to grab results of map search query
-                geocoder.geocode({'location': latlng}, function(results, status) {
-                  if (status == "OK"){
-                    if (results[0]){
-                      var currentLoc = results[0].address_components[5].long_name;
-                      //alert("location name = " + results[0].address_components[5].long_name);
-                      //load map
-                      $('#map-canvas').html('<iframe width="100%" height="70%" frameborder="0" style="border:0"' +
-                      'src="https://www.google.com/maps/embed/v1/search?key=AIzaSyCoSolGmCfXef_f3hK7qtxWdUFGwCfFQqE&center='+ latLong
-                      +'&zoom=11&q=cinemas+near+'+ currentLoc +'" allowfullscreen></iframe>');
-                      //$('#map-canvas').css('background-color','red');
-                      //$('#map-canvas').attr('style', 'background-color: red !important');
-                    };
-                  };
-                });
-              });
+          //$( ":mobile-pagecontainer" ).pagecontainer( "change", "#map-page");
+        };
+      };
+    });
+  });
+/*************************************************************/
 
 function loadSearchData(e){
 //add movie title to global variable
@@ -410,7 +452,7 @@ function loadMovieData(e){
     //now load reviews
     loadReviews(e);
 }
-
+/*************************************************************/
 
 function register(){
 
@@ -440,6 +482,7 @@ function register(){
 
       //});
       }
+  /*************************************************************/
 
 function login(){
           $(document).ready(function(){
@@ -456,6 +499,7 @@ function login(){
                           {
                               //alert(JSON.stringify(result));
                               window.location.replace("index.php#main-page");
+                              location.reload();
                               //populate user data
                               $("#namespan").html(result.username);
                               $("#emailspan").html(result.email);
@@ -463,24 +507,19 @@ function login(){
                               $("#aboutmespan").html(result.about_me);
                               $("#profileavatar").html("<img src="+ result.avatar +" style='max-width:100%; border-radius:0.5em; max-height:100%;'/>");
                               $("#sessionuserid").html(result.id);
-
                           }
                           else
                           {
                               alert("login failed: "+ JSON.stringify(result));
                           }
-
                   },
                   error: function(result){
                           alert("ajax fail");
                   }
-
-
               });
-
       });
-
   };
+/*************************************************************/
 
   //login on press of enter
   $(document).ready(function(){
@@ -490,35 +529,7 @@ function login(){
     };
   });
 });
-
-  /*//update profile
-  function updateProfile(){
-    var username = $("#updatenametxtarea")[0].value;
-    //alert("username = " + username);
-    var email = $("#updateemailtxtarea")[0].value;
-    var about_me = $("#updateaboutmetxtarea")[0].value;
-    var location = $("#updatelocationtxtarea")[0].value;
-    var filename = $("#filetoupload").val();
-    var file = $("#filetoupload").files[0];
-    if (username == "" && email == "" && about_me == "" && location == "" && filename == ""){
-      alert("Please enter at least one update!")
-    }
-    else{
-    $.ajax({
-        type: "POST",
-        url: "profile.php",
-        data: "username="+username+"&email="+email+"&about_me="+about_me+"&location="+location,
-        success: function(result){
-                //$("#message")[0].value = "Success";
-                alert("Profile update successful!\n Please logout and login to see changes");
-        },
-        error: function(xhr, status, error){
-            //$("#message")[0].value = "Ajax error!"+result;
-            alert("Profile update unsuccessful" + xhr.responseText + error.responseText);
-        }
-    });
-  };
-};*/
+/*************************************************************/
 
 //submit profile update Form
 function updateProfile2(){
@@ -554,7 +565,9 @@ else{
 alert("Please enter some information!");
 }
 };
+/*************************************************************/
 
+//load public user profile page
 function goToPublicProfile(id){
 //get user name
 var userid = id;
@@ -593,3 +606,4 @@ $.ajax({
 });
 
 }
+/*************************************************************/

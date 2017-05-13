@@ -1,4 +1,10 @@
 <?php
+/*
+* check_login.php
+* Rev 1
+* 08/02/17
+* @author: Eoin Sutton
+*/
 
 //check if user logged in
 

@@ -1,6 +1,9 @@
-
 <?php
 /*
+* scraperv2.php
+* Rev 4
+* 01/04/17
+* @author: Eoin Sutton
 * @reference: DOM Parser http://simplehtmldom.sourceforge.net/
 */
 include('simple_html_dom.php');
